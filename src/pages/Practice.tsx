@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Search } from "lucide-react";
 
 // ✅ Define Question Type
@@ -3525,14 +3524,16 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
   // ✅ Progress Calculation
   const totalQuestions = questionsList.length;
   const solvedQuestions = questionsList.filter((q) => q.solved).length;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
+  // COMPLETION PERCENTAGE NOT SHOWING
   const completionPercentage =
     totalQuestions > 0
       ? Math.round((solvedQuestions / totalQuestions) * 100)
       : 0;
+      console.log("Completion %:", completionPercentage);
 
   // ✅ Difficulty Stats
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  
   const difficultyStats = {
     Easy: {
       total: questionsList.filter((q) => q.difficulty === "Easy").length,
@@ -3553,13 +3554,17 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
       ).length,
     },
   };
+  // DIFFICULTY STATS NOT SHOWING
+  console.log("difficultyStats:", difficultyStats);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // ✅ Difficulty Colors
   const difficultyColors: Record<"Easy" | "Medium" | "Hard", string> = {
     Easy: "#22C55E",
     Medium: "#F97316",
     Hard: "#EF4444",
   };
+  // DIFFICULTY COLORS NOT SHOWING
+  console.log("difficultyColors:", difficultyColors);
 
   // ✅ Handlers
   const handleCheckboxChange = (id: number) => {

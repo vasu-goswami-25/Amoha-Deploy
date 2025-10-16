@@ -1,6 +1,3 @@
-
-
-
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 
@@ -20,52 +17,8 @@ interface ServiceBasedDSAProps {
   darkMode?: boolean;
 }
 
-// --- Data Structure (Backend Logic) ---
-// {
-//   TCS: [
-//     { title: "Two Sum" },
-//     { title: "Merge Intervals" },
-//     { title: "Valid Parentheses" },
-//     { title: "Reverse Linked List" },
-//     { title: "Valid Sudoku" },
-//     { title: "Surrounded Regions" },
-//     { title: "Graph Valid Tree" },
-//     { title: "Sliding Window Maximum" },
-//     { title: "Palindromic Substrings" },
-//     { title: "Dungeon Game" },
-//     { title: "Word Break" },
-//     { title: "Merge k Sorted Lists" },
-//     { title: "Trapping Rain Water II" },
-//     { title: "Evaluate Reverse Polish Notation" },
-//     { title: "Shortest Palindrome" },
-//     { title: "Minimum Genetic Mutation" },
-//     { title: "Detect Cycle in Graph" },
-//     { title: "Word Search II" },
-//     { title: "Pacific Atlantic Water Flow" },
-//     { title: "Word Ladder" },
-//     { title: "Minimum Number of Arrows to Burst Balloons" },
-//     { title: "Best Time to Buy and Sell Stock" },
-//     { title: "Decode Ways" },
-//     { title: "Minimum Path Sum" },
-//     { title: "Combination Sum II" },
-//     { title: "Find K Pairs with Smallest Sums" },
-//     { title: "Maximum Sum Circular Subarray" },
-//     { title: "Search in Rotated Sorted Array II" },
-//     { title: "Meeting Rooms II" },
-//     { title: "Range Module" },
-//     { title: "LFU Cache" },
-//     { title: "Kth Smallest Element in a BST" },
-//     { title: "Populating Next Right Pointers in Each Node" },
-//     { title: "Path Sum" },
-//     { title: "Max Area of Island" },
-//     { title: "Sliding Puzzle" },
-//     { title: "Alien Dictionary" },
-//     { title: "Redundant Connection II" },
-//   ],
-//   // 👇 Add the rest of your companies here (Accenture, Capgemini, Cognizant, Infosys, Wipro)
-// };
-
-const companyProblems: Record<string, Problem[]>  = {
+// --- Company Problems ---
+const companyProblems: Record<string, Problem[]> = {
   TCS: [
     { title: "Two Sum" },
     { title: "Merge Intervals" },
@@ -149,7 +102,7 @@ const companyProblems: Record<string, Problem[]>  = {
     { title: "Validate Binary Tree Nodes" },
     { title: "Redundant Connection" },
   ],
-    Capgemini: [
+  Capgemini: [
     { title: "Product of Array Except Self" },
     { title: "Meeting Rooms II" },
     { title: "Add Two Numbers" },
@@ -192,9 +145,9 @@ const companyProblems: Record<string, Problem[]>  = {
     { title: "Pacific Atlantic Water Flow" },
     { title: "Serialize and Deserialize BST" },
     { title: "Course Schedule II" },
- 
+
   ],
-   Cognizant: [
+  Cognizant: [
     { title: "Find Minimum in Rotated Sorted Array" },
     { title: "Container With Most Water" },
     { title: "Remove Nth Node From End of List" },
@@ -217,7 +170,7 @@ const companyProblems: Record<string, Problem[]>  = {
     { title: "Maximal Rectangle" },
     { title: "Meeting Rooms II" },
     { title: "Jump Game" },
-    { title: "Best Time to Buy and Sell Stock with Cooldown" },
+    { title: "Best Time to Buy and Sell Stock" },
     { title: "Word Break" },
     { title: "Distinct Subsequences" },
     { title: "Unique Paths" },
@@ -236,7 +189,7 @@ const companyProblems: Record<string, Problem[]>  = {
     { title: "Count Complete Tree Nodes" },
     { title: "Minimum Height Trees" },
   ],
-    Infosys: [
+  Infosys: [
     { title: "Best Time to Buy and Sell Stock" },
     { title: "Insert Interval" },
     { title: "Generate Parentheses" },
@@ -275,7 +228,7 @@ const companyProblems: Record<string, Problem[]>  = {
     { title: "Minimum Moves to Equal Array Elements" },
     { title: "Reconstruct Itinerary" },
   ],
-    Wipro: [
+  Wipro: [
     { title: "Maximum Subarray" },
     { title: "Meeting Rooms" },
     { title: "Merge Two Sorted Lists" },
@@ -321,8 +274,6 @@ const companyProblems: Record<string, Problem[]>  = {
   ],
 };
 
-
-
 // --- Initial Questions ---
 const initialQuestions: Question[] = Object.entries(companyProblems).flatMap(
   ([company, problems], index) =>
@@ -340,7 +291,7 @@ const allCompanies: string[] = Object.keys(companyProblems);
 const createLeetCodeLink = (title: string): string => {
   const formattedTitle = title
     .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, "") // remove special chars
+    .replace(/[^a-z0-9\s]/g, "")
     .replace(/\s+/g, "-");
   return `https://leetcode.com/problems/${formattedTitle}/`;
 };
@@ -352,8 +303,8 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
   const [problemSearchTerm, setProblemSearchTerm] = useState<string>("");
 
   const handleCheckboxChange = (id: string) => {
-    setQuestionsList((prevList) =>
-      prevList.map((q) => (q.id === id ? { ...q, solved: !q.solved } : q))
+    setQuestionsList((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, solved: !q.solved } : q))
     );
   };
 
@@ -363,25 +314,20 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
 
   const filteredQuestions = questionsList.filter((q) => {
     const matchesCompany = !selectedCompany || q.company === selectedCompany;
-    const matchesSearchTerm = !problemSearchTerm ||
-      q.title.toLowerCase().includes(problemSearchTerm.toLowerCase());
+    const matchesSearchTerm =
+      !problemSearchTerm || q.title.toLowerCase().includes(problemSearchTerm.toLowerCase());
     return matchesCompany && matchesSearchTerm;
   });
 
   const totalQuestions = questionsList.length;
   const solvedQuestions = questionsList.filter((q) => q.solved).length;
-  const completionPercentage =
-    totalQuestions > 0 ? Math.round((solvedQuestions / totalQuestions) * 100) : 0;
+  const completionPercentage = totalQuestions > 0 ? Math.round((solvedQuestions / totalQuestions) * 100) : 0;
 
-  // Company stats
   const companyStats = allCompanies.reduce<Record<string, { total: number; solved: number }>>(
     (stats, company) => {
       const companyProblemsCount = questionsList.filter((q) => q.company === company).length;
       const solvedCount = questionsList.filter((q) => q.company === company && q.solved).length;
-      stats[company] = {
-        total: companyProblemsCount,
-        solved: solvedCount,
-      };
+      stats[company] = { total: companyProblemsCount, solved: solvedCount };
       return stats;
     },
     {}
@@ -394,67 +340,57 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
 
   return (
     <div
-      className={`flex min-h-screen transition-colors duration-500 pt-20 ${
-        darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-      }`}
+      className={`flex flex-col lg:flex-row min-h-screen transition-colors duration-500 pt-20 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+        }`}
     >
       {/* Sidebar */}
       <div
-        className={`w-72 border-r p-4 transition-colors duration-500 ${
-          darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-        }`}
+        className={`w-full lg:w-72 border-b lg:border-b-0 lg:border-r p-4 transition-colors duration-500 mt-6 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+          }`}
       >
         <h1 className="text-lg font-bold mb-4">Filters</h1>
         <div className="relative mb-6">
           <Search
-            className={`absolute left-3 top-2.5 w-4 h-4 ${
-              darkMode ? "text-purple-300" : "text-purple-500"
-            }`}
+            className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-purple-500"
+              }`}
           />
           <input
             type="text"
             placeholder="Search problems..."
-            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${
-              darkMode
-                ? "bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-purple-400"
-                : "bg-purple-50 border border-purple-200 text-black focus:ring-2 focus:ring-purple-500"
-            }`}
+            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode
+                ? "bg-gray-700 border border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]"
+                : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]"
+              }`}
             value={problemSearchTerm}
             onChange={(e) => setProblemSearchTerm(e.target.value)}
           />
         </div>
         <h2 className="font-semibold text-base mb-3">Companies</h2>
-        <ul className="space-y-3">
+        <ul className="space-y-3 max-h-[60vh] overflow-y-auto">
           {allCompanies.map((company) => (
             <li key={company}>
               <div
-                className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
-                  selectedCompany === company
+                className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${selectedCompany === company
                     ? darkMode
                       ? "bg-gray-700"
                       : "bg-gray-100"
                     : darkMode
-                    ? "hover:bg-gray-700"
-                    : "hover:bg-gray-100"
-                }`}
+                      ? "hover:bg-gray-700"
+                      : "hover:bg-gray-100"
+                  }`}
                 onClick={() => handleCompanyClick(company)}
               >
                 <span
-                  className={`font-medium ${
-                    selectedCompany === company
+                  className={`font-medium ${selectedCompany === company
                       ? "text-purple-800"
                       : darkMode
-                      ? "text-gray-200"
-                      : "text-gray-800"
-                  }`}
+                        ? "text-gray-200"
+                        : "text-gray-800"
+                    }`}
                 >
                   {company}
                 </span>
-                <span
-                  className={`text-xs font-medium ${
-                    darkMode ? "text-gray-400" : "text-gray-600"
-                  }`}
-                >
+                <span className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                   {getCompanyProgress(company)}
                 </span>
               </div>
@@ -464,73 +400,59 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
       </div>
 
       {/* Right Content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 lg:p-6 overflow-x-auto">
         {/* Progress Section */}
         <div
-          className={`p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${
-            darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900"
-          }`}
+          className={`p-4 lg:p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900"
+            }`}
         >
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Progress</h2>
-          </div>
-          <div className="flex items-center space-x-6">
-            {/* Total Progress */}
-            <div className="flex flex-col items-start min-w-[120px]">
-              <span className="text-2xl font-bold">
-                {solvedQuestions} / {totalQuestions}
-              </span>
-              <p
-                className={`text-sm ${
-                  darkMode ? "text-gray-400" : "text-gray-800"
-                }`}
-              >
-                Total Progress
-              </p>
-            </div>
+          <div className="flex flex-row justify-between items-center flex-wrap gap-4">
+            <div className="flex flex-col">
+              <h2 className="text-xl font-bold mb-2">Progress</h2>
+              <div className="flex items-center gap-6">
+                {/* Total Progress */}
+                <div className="flex flex-col items-start min-w-[100px]">
+                  <span className="text-2xl font-bold">{solvedQuestions} / {totalQuestions}</span>
+                  <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-800"}`}>Total Progress</p>
+                </div>
 
-            {/* Circle */}
-            <div className="flex flex-col items-center">
-              <div className="w-20 h-20 relative">
-                <svg className="w-full h-full transform -rotate-90">
-                  <circle
-                    className={`stroke-current ${
-                      darkMode ? "text-gray-700" : "text-gray-300"
-                    }`}
-                    strokeWidth="6"
-                    fill="transparent"
-                    r="30"
-                    cx="40"
-                    cy="40"
-                  />
-                  <circle
-                    className="stroke-current text-orange-500"
-                    strokeWidth="6"
-                    strokeDasharray={30 * 2 * Math.PI}
-                    strokeDashoffset={
-                      30 * 2 * Math.PI -
-                      (completionPercentage / 100) * (30 * 2 * Math.PI)
-                    }
-                    strokeLinecap="round"
-                    fill="transparent"
-                    r="30"
-                    cx="40"
-                    cy="40"
-                  />
-                </svg>
-                <span
-                  className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-lg ${
-                    darkMode ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  {completionPercentage}%
-                </span>
+                {/* Circle */}
+                <div className="w-20 h-20 relative flex-shrink-0">
+                  <svg viewBox="0 0 80 80" className="w-full h-full transform -rotate-90">
+                    <circle
+                      className={`stroke-current ${darkMode ? "text-gray-700" : "text-gray-300"}`}
+                      strokeWidth="6"
+                      fill="transparent"
+                      r="30"
+                      cx="40"
+                      cy="40"
+                    />
+                    <circle
+                      className="stroke-current text-[#6334B9]"
+                      strokeWidth="6"
+                      strokeDasharray={30 * 2 * Math.PI}
+                      strokeDashoffset={30 * 2 * Math.PI - (completionPercentage / 100) * (30 * 2 * Math.PI)}
+                      strokeLinecap="round"
+                      fill="transparent"
+                      r="30"
+                      cx="40"
+                      cy="40"
+                    />
+                  </svg>
+                  <span
+                    className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-lg ${darkMode ? "text-white" : "text-gray-900"
+                      }`}
+                  >
+                    {completionPercentage}%
+                  </span>
+                </div>
+
               </div>
             </div>
           </div>
         </div>
 
-        {/* Questions */}
+        {/* Questions Table */}
         <h2 className="text-2xl font-bold mb-4">Practice Problems</h2>
         {filteredQuestions.length === 0 ? (
           <p className={`text-gray-500 ${darkMode ? "dark:text-gray-400" : ""}`}>
@@ -539,9 +461,8 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
         ) : (
           <div className="overflow-x-auto">
             <table
-              className={`w-full border rounded-lg transition-colors duration-500 ${
-                darkMode ? "border-gray-700" : "border-gray-200"
-              }`}
+              className={`w-full min-w-[600px] border rounded-lg transition-colors duration-500 ${darkMode ? "border-gray-700" : "border-gray-200"
+                }`}
             >
               <thead className={darkMode ? "bg-gray-700" : "bg-gray-100"}>
                 <tr>
@@ -554,11 +475,8 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
                 {filteredQuestions.map((q) => (
                   <tr
                     key={q.id}
-                    className={`border-t ${
-                      darkMode
-                        ? "border-gray-700 hover:bg-gray-800"
-                        : "border-gray-200 hover:bg-gray-50"
-                    }`}
+                    className={`border-t ${darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-gray-50"
+                      }`}
                   >
                     <td className="p-3">
                       <input
@@ -573,22 +491,16 @@ const ServiceBasedDSA: React.FC<ServiceBasedDSAProps> = ({ darkMode = false }) =
                         href={createLeetCodeLink(q.title)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`font-medium ${
-                          darkMode
-                            ? "text-gray-200 hover:text-purple-400"
-                            : "text-gray-900 hover:text-purple-600"
-                        }`}
+                        className={`font-medium ${darkMode ? "text-gray-200 hover:text-[#6334B9]" : "text-gray-900 hover:text-[#6334B9]"
+                          }`}
                       >
                         {q.title}
                       </a>
                     </td>
                     <td className="p-3">
                       <span
-                        className={`px-2 py-1 text-sm rounded-full ${
-                          darkMode
-                            ? "bg-gray-700 text-gray-200"
-                            : "bg-gray-100 text-gray-700"
-                        }`}
+                        className={`px-2 py-1 text-sm rounded-full ${darkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-700"
+                          }`}
                       >
                         {q.company}
                       </span>

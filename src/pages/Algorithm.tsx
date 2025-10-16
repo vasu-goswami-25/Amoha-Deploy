@@ -1,9 +1,33 @@
-
-import { Search, ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { Search, ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 
-// The full list of DSA problems and patterns from the provided document
-const dsaPatterns = [
+// --- Type Definitions (Unchanged) ---
+interface Problem {
+  title: string;
+  leetcode?: string;
+  platform?: string;
+  link: string;
+  id: number; // Added in createInitialState
+  solved: boolean; // Added in createInitialState
+}
+
+interface RawSubcategory {
+  subcategory: string;
+  problems: Omit<Problem, 'id' | 'solved'>[];
+}
+
+interface Pattern {
+  category: string;
+  subcategories: RawSubcategory[];
+}
+
+interface InitializedProblem extends Problem {
+  category: string;
+  subcategory: string;
+}
+
+// --- Data Structure (Unchanged) ---
+const dsaPatterns: Pattern[] = [
   // Array
   {
     category: "Array",
@@ -21,7 +45,7 @@ const dsaPatterns = [
             leetcode: "1109",
             link: "https://leetcode.com/problems/corporate-flight-bookings/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Sliding Window",
@@ -36,7 +60,7 @@ const dsaPatterns = [
             leetcode: "3",
             link: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Two Pointers",
@@ -47,7 +71,7 @@ const dsaPatterns = [
             link: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
           },
           { title: "3Sum", leetcode: "15", link: "https://leetcode.com/problems/3sum/" },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Sorting Based Tricks",
@@ -62,7 +86,7 @@ const dsaPatterns = [
             leetcode: "253",
             link: "https://leetcode.com/problems/meeting-rooms-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Binary Search on Answer",
@@ -77,7 +101,7 @@ const dsaPatterns = [
             platform: "SPOJ",
             link: "https://www.spoj.com/problems/AGGRCOW/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Kadane’s Algorithm",
@@ -92,7 +116,7 @@ const dsaPatterns = [
             leetcode: "918",
             link: "https://leetcode.com/problems/maximum-sum-circular-subarray/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Dutch National Flag (3-way partition)",
@@ -107,7 +131,7 @@ const dsaPatterns = [
             leetcode: "280",
             link: "https://leetcode.com/problems/wiggle-sort/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Cyclic Sort",
@@ -122,7 +146,7 @@ const dsaPatterns = [
             leetcode: "41",
             link: "https://leetcode.com/problems/first-missing-positive/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -143,7 +167,7 @@ const dsaPatterns = [
             leetcode: "424",
             link: "https://leetcode.com/problems/longest-repeating-character-replacement/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Two Pointers",
@@ -158,7 +182,7 @@ const dsaPatterns = [
             leetcode: "5",
             link: "https://leetcode.com/problems/longest-palindromic-substring/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Hashing / Rolling Hash",
@@ -173,7 +197,7 @@ const dsaPatterns = [
             platform: "SPOJ",
             link: "https://www.spoj.com/problems/SUBSTR1/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "KMP Algorithm",
@@ -188,7 +212,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Z Algorithm",
@@ -203,7 +227,7 @@ const dsaPatterns = [
             platform: "SPOJ",
             link: "https://www.spoj.com/problems/SUBSTR1/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Trie-based Prefix Matching",
@@ -218,7 +242,7 @@ const dsaPatterns = [
             leetcode: "212",
             link: "https://leetcode.com/problems/word-search-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Manacher’s Algorithm",
@@ -233,7 +257,7 @@ const dsaPatterns = [
             leetcode: "647",
             link: "https://leetcode.com/problems/palindromic-substrings/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Suffix Array / Automaton",
@@ -248,7 +272,7 @@ const dsaPatterns = [
             platform: "SPOJ",
             link: "https://www.spoj.com/problems/SUBSTR1/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -269,7 +293,7 @@ const dsaPatterns = [
             leetcode: "142",
             link: "https://leetcode.com/problems/linked-list-cycle-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Reversal",
@@ -284,7 +308,7 @@ const dsaPatterns = [
             leetcode: "25",
             link: "https://leetcode.com/problems/reverse-nodes-in-k-group/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Merge Two Sorted Lists",
@@ -299,7 +323,7 @@ const dsaPatterns = [
             leetcode: "23",
             link: "https://leetcode.com/problems/merge-k-sorted-lists/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Detect Intersection",
@@ -314,7 +338,7 @@ const dsaPatterns = [
             leetcode: "1669",
             link: "https://leetcode.com/problems/merge-in-between-linked-lists/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Copy List with Random Pointer",
@@ -329,7 +353,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/clone-linked-list-random-pointer/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Flatten Linked List",
@@ -344,7 +368,7 @@ const dsaPatterns = [
             leetcode: "114",
             link: "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -365,7 +389,7 @@ const dsaPatterns = [
             leetcode: "39",
             link: "https://leetcode.com/problems/combination-sum/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Subsets / Subsequences",
@@ -380,7 +404,7 @@ const dsaPatterns = [
             leetcode: "17",
             link: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Permutations",
@@ -395,7 +419,7 @@ const dsaPatterns = [
             leetcode: "47",
             link: "https://leetcode.com/problems/permutations-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Partitioning",
@@ -410,7 +434,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/matrix-chain-multiplication-dp-8/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Grid DFS",
@@ -425,7 +449,7 @@ const dsaPatterns = [
             leetcode: "51",
             link: "https://leetcode.com/problems/n-queens/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Multiple Recursion Calls",
@@ -440,7 +464,7 @@ const dsaPatterns = [
             leetcode: "22",
             link: "https://leetcode.com/problems/generate-parentheses/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -461,7 +485,7 @@ const dsaPatterns = [
             leetcode: "136",
             link: "https://leetcode.com/problems/single-number/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Subset Generation (Bitmasking)",
@@ -476,7 +500,7 @@ const dsaPatterns = [
             leetcode: "2044",
             link: "https://leetcode.com/problems/count-number-of-maximum-bitwise-or-subsets/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "XOR Tricks",
@@ -491,7 +515,7 @@ const dsaPatterns = [
             leetcode: "268",
             link: "https://leetcode.com/problems/missing-number/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Count Set Bits",
@@ -506,7 +530,7 @@ const dsaPatterns = [
             leetcode: "191",
             link: "https://leetcode.com/problems/number-of-1-bits/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Power of 2 Check",
@@ -521,7 +545,7 @@ const dsaPatterns = [
             leetcode: "231",
             link: "https://leetcode.com/problems/power-of-two/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Fast Exponentiation",
@@ -536,7 +560,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -557,7 +581,7 @@ const dsaPatterns = [
             leetcode: "84",
             link: "https://leetcode.com/problems/largest-rectangle-in-histogram/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Monotonic Queue",
@@ -572,7 +596,7 @@ const dsaPatterns = [
             leetcode: "862",
             link: "https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Balanced Parentheses",
@@ -587,7 +611,7 @@ const dsaPatterns = [
             leetcode: "921",
             link: "https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Min/Max Stack",
@@ -602,7 +626,7 @@ const dsaPatterns = [
             leetcode: "716",
             link: "https://leetcode.com/problems/max-stack/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Queue using Stacks / Stack using Queues",
@@ -617,7 +641,7 @@ const dsaPatterns = [
             leetcode: "225",
             link: "https://leetcode.com/problems/implement-stack-using-queues/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "LRU / LFU Cache",
@@ -632,7 +656,7 @@ const dsaPatterns = [
             leetcode: "460",
             link: "https://leetcode.com/problems/lfu-cache/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -653,7 +677,7 @@ const dsaPatterns = [
             leetcode: "1004",
             link: "https://leetcode.com/problems/max-consecutive-ones-iii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Variable Window Size",
@@ -668,7 +692,7 @@ const dsaPatterns = [
             leetcode: "904",
             link: "https://leetcode.com/problems/fruit-into-baskets/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Two Sum / Three Sum / Four Sum",
@@ -679,7 +703,7 @@ const dsaPatterns = [
             link: "https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/",
           },
           { title: "4Sum", leetcode: "18", link: "https://leetcode.com/problems/4sum/" },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Trapping Rainwater",
@@ -694,7 +718,7 @@ const dsaPatterns = [
             leetcode: "11",
             link: "https://leetcode.com/problems/container-with-most-water/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Minimum Window Substring",
@@ -709,7 +733,7 @@ const dsaPatterns = [
             leetcode: "1081",
             link: "https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -730,7 +754,7 @@ const dsaPatterns = [
             leetcode: "973",
             link: "https://leetcode.com/problems/k-closest-points-to-origin/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Kth Largest / Smallest",
@@ -745,7 +769,7 @@ const dsaPatterns = [
             leetcode: "378",
             link: "https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Merge K Sorted Lists / Arrays",
@@ -760,7 +784,7 @@ const dsaPatterns = [
             leetcode: "632",
             link: "https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Median of Data Stream",
@@ -775,7 +799,7 @@ const dsaPatterns = [
             leetcode: "480",
             link: "https://leetcode.com/problems/sliding-window-median/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Huffman Encoding",
@@ -790,7 +814,7 @@ const dsaPatterns = [
             leetcode: "1167",
             link: "https://leetcode.com/problems/minimum-cost-to-connect-sticks/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -811,7 +835,7 @@ const dsaPatterns = [
             leetcode: "1353",
             link: "https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Interval Merging",
@@ -826,7 +850,7 @@ const dsaPatterns = [
             leetcode: "57",
             link: "https://leetcode.com/problems/insert-interval/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Minimum Platforms / Meeting Rooms",
@@ -841,7 +865,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/minimum-number-platforms-required-railwaybus-station/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Fractional Knapsack",
@@ -856,7 +880,7 @@ const dsaPatterns = [
             leetcode: "502",
             link: "https://leetcode.com/problems/ipo/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Job Sequencing with Deadlines",
@@ -871,7 +895,7 @@ const dsaPatterns = [
             leetcode: "1235",
             link: "https://leetcode.com/problems/maximum-profit-in-job-scheduling/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Jump Game / Gas Station",
@@ -886,7 +910,7 @@ const dsaPatterns = [
             leetcode: "134",
             link: "https://leetcode.com/problems/gas-station/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -907,7 +931,7 @@ const dsaPatterns = [
             leetcode: "94",
             link: "https://leetcode.com/problems/binary-tree-inorder-traversal/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Height / Diameter / Balance Check",
@@ -922,7 +946,7 @@ const dsaPatterns = [
             leetcode: "110",
             link: "https://leetcode.com/problems/balanced-binary-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Path Problems",
@@ -937,7 +961,7 @@ const dsaPatterns = [
             leetcode: "124",
             link: "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Views",
@@ -952,7 +976,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/print-nodes-top-view-binary-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Symmetry / Identical / Subtree",
@@ -967,7 +991,7 @@ const dsaPatterns = [
             leetcode: "572",
             link: "https://leetcode.com/problems/subtree-of-another-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Build Tree from Traversals",
@@ -982,7 +1006,7 @@ const dsaPatterns = [
             leetcode: "106",
             link: "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Flatten Binary Tree",
@@ -997,7 +1021,7 @@ const dsaPatterns = [
             leetcode: "109",
             link: "https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "BST Operations",
@@ -1012,7 +1036,7 @@ const dsaPatterns = [
             leetcode: "701",
             link: "https://leetcode.com/problems/insert-into-a-binary-search-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -1033,7 +1057,7 @@ const dsaPatterns = [
             leetcode: "207",
             link: "https://leetcode.com/problems/course-schedule/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Shortest Path",
@@ -1048,7 +1072,7 @@ const dsaPatterns = [
             leetcode: "1197",
             link: "https://leetcode.com/problems/minimum-knight-moves/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "MST",
@@ -1063,7 +1087,7 @@ const dsaPatterns = [
             leetcode: "1584",
             link: "https://leetcode.com/problems/min-cost-to-connect-all-points/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Advanced",
@@ -1078,7 +1102,7 @@ const dsaPatterns = [
             leetcode: "685",
             link: "https://leetcode.com/problems/redundant-connection-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -1099,7 +1123,7 @@ const dsaPatterns = [
             leetcode: "63",
             link: "https://leetcode.com/problems/unique-paths-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Subsequences",
@@ -1114,7 +1138,7 @@ const dsaPatterns = [
             leetcode: "300",
             link: "https://leetcode.com/problems/longest-increasing-subsequence/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "String DP",
@@ -1129,7 +1153,7 @@ const dsaPatterns = [
             leetcode: "72",
             link: "https://leetcode.com/problems/edit-distance/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Advanced",
@@ -1144,7 +1168,7 @@ const dsaPatterns = [
             leetcode: "1012",
             link: "https://leetcode.com/problems/numbers-with-unique-digits/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -1165,7 +1189,7 @@ const dsaPatterns = [
             leetcode: "421",
             link: "https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Advanced Trie",
@@ -1180,7 +1204,7 @@ const dsaPatterns = [
             leetcode: "1032",
             link: "https://leetcode.com/problems/stream-of-characters/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -1201,7 +1225,7 @@ const dsaPatterns = [
             platform: "CP Algo",
             link: "https://cp-algorithms.com/string/z-function.html",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Palindrome / Manacher",
@@ -1216,7 +1240,7 @@ const dsaPatterns = [
             leetcode: "132",
             link: "https://leetcode.com/problems/palindrome-partitioning-ii/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Suffix Structures",
@@ -1231,7 +1255,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/count-distinct-substrings-of-a-string-using-suffix-automaton/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Advanced Algorithms",
@@ -1246,7 +1270,7 @@ const dsaPatterns = [
             platform: "CP Algo",
             link: "https://cp-algorithms.com/string/aho_corasick.html",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
@@ -1267,7 +1291,7 @@ const dsaPatterns = [
             leetcode: "4",
             link: "https://leetcode.com/problems/median-of-two-sorted-arrays/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Segment Tree / Fenwick Tree",
@@ -1282,7 +1306,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/count-inversions-using-fenwick-tree/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Disjoint Set Union (DSU)",
@@ -1297,7 +1321,7 @@ const dsaPatterns = [
             leetcode: "323",
             link: "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Math / Number Theory",
@@ -1312,7 +1336,7 @@ const dsaPatterns = [
             platform: "GFG",
             link: "https://www.geeksforgeeks.org/modular-exponentiation-power-in-modular-arithmetic/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
       {
         subcategory: "Geometry",
@@ -1327,15 +1351,15 @@ const dsaPatterns = [
             leetcode: "587",
             link: "https://leetcode.com/problems/erect-the-fence/",
           },
-        ],
+        ] as Omit<Problem, 'id' | 'solved'>[],
       },
     ],
   },
 ];
 
-// Helper function to create a unique ID for each problem
+// Helper function to create a unique ID for each problem (Unchanged)
 let problemId = 0;
-const createInitialState = () => {
+const createInitialState = (): Pattern[] => {
   return dsaPatterns.map((pattern) => ({
     ...pattern,
     subcategories: pattern.subcategories.map((subcat) => ({
@@ -1344,18 +1368,32 @@ const createInitialState = () => {
         ...problem,
         id: problemId++,
         solved: false,
-      })),
+      })) as Problem[],
     })),
-  }));
+  })) as Pattern[];
 };
 
-function Algorithm({ darkMode = false }) {
-  const [patternsList, setPatternsList] = useState(createInitialState);
-  const [problemSearchTerm, setProblemSearchTerm] = useState("");
-  const [expandedCategory, setExpandedCategory] = useState(String||null);
-  const [expandedSubcategory, setExpandedSubcategory] = useState( String || null);
+type InitializedPatternList = {
+  category: string;
+  subcategories: {
+    subcategory: string;
+    problems: Problem[];
+  }[];
+}[];
 
-  const handleCheckboxChange = (problemId: number, category: string, subcategory: string) => {
+
+function Algorithm({ darkMode = false }: { darkMode?: boolean }) {
+  // State (Unchanged except for adding isSidebarOpen)
+  const [patternsList, setPatternsList] = useState<InitializedPatternList>(createInitialState as () => InitializedPatternList);
+  const [problemSearchTerm, setProblemSearchTerm] = useState<string>("");
+
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false); // State for mobile sidebar visibility
+
+
+  const handleCheckboxChange = (problemId: number, category: string, subcategory: string): void => {
     setPatternsList((prevList) =>
       prevList.map((pattern) => {
         if (pattern.category === category) {
@@ -1379,7 +1417,7 @@ function Algorithm({ darkMode = false }) {
     );
   };
 
-  const flattenProblems = patternsList.flatMap((pattern) =>
+  const flattenProblems: InitializedProblem[] = patternsList.flatMap((pattern) =>
     pattern.subcategories.flatMap((subcat) =>
       subcat.problems.map((problem) => ({
         ...problem,
@@ -1396,19 +1434,19 @@ function Algorithm({ darkMode = false }) {
       q.title.toLowerCase().includes(problemSearchTerm.toLowerCase())
   );
 
-  const totalProblems = flattenProblems.length;
-  const solvedProblems = flattenProblems.filter((q) => q.solved).length;
-  const completionPercentage =
+  const totalProblems: number = flattenProblems.length;
+  const solvedProblems: number = flattenProblems.filter((q) => q.solved).length;
+  const completionPercentage: number =
     totalProblems > 0 ? Math.round((solvedProblems / totalProblems) * 100) : 0;
 
-  const getCategoryProgress = (category: string) => {
+  const getCategoryProgress = (category: string): string => {
     const categoryProblems = flattenProblems.filter((q) => q.category === category);
     const solvedCount = categoryProblems.filter((q) => q.solved).length;
     const totalCount = categoryProblems.length;
     return `(${solvedCount}/${totalCount})`;
   };
 
-  const getSubcategoryProgress = (category: string, subcategory: string) => {
+  const getSubcategoryProgress = (category: string, subcategory: string): string => {
     const subcategoryProblems = flattenProblems.filter(
       (q) => q.category === category && q.subcategory === subcategory
     );
@@ -1417,87 +1455,149 @@ function Algorithm({ darkMode = false }) {
     return `(${solvedCount}/${totalCount})`;
   };
 
-  const getBackgroundColorClass = () => (darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900");
-  const getSidebarColorClass = () => (darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200");
-  const getProgressSectionColorClass = () => (darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900");
-  const getProblemSearchColorClass = () => (darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-purple-400" : "bg-purple-50 border-purple-200 text-black focus:ring-purple-500");
-  const getTableColorClass = () => (darkMode ? "border-gray-700" : "border-gray-200");
-  const getTableHeaderColorClass = () => (darkMode ? "bg-gray-700" : "bg-gray-100");
-  const getTableRowColorClass = () => (darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-gray-50");
-  const getProblemTitleColorClass = () => (darkMode ? "text-gray-200 hover:text-purple-400" : "text-gray-900 hover:text-purple-600");
+const getBackgroundColorClass = (): string =>
+  darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900";
+
+const getSidebarColorClass = (): string =>
+  darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200";
+
+const getProgressSectionColorClass = (): string =>
+  darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900";
+
+const getProblemSearchColorClass = (): string =>
+  darkMode
+    ? "bg-gray-700 border border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]"
+              : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]";// bg slightly lighter shade
+
+const getTableColorClass = (): string =>
+  darkMode ? "border-gray-700" : "border-gray-200";
+
+const getTableHeaderColorClass = (): string =>
+  darkMode ? "bg-gray-700" : "bg-gray-100";
+
+const getTableRowColorClass = (): string =>
+  darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-[#F2F0FF]"; // hover slightly lighter
+
+const getProblemTitleColorClass = (): string =>
+  darkMode
+    ? "text-gray-200 hover:text-[#6334B9]"
+    : "text-gray-900 hover:text-[#6334B9]";
+
+const getPurpleButtonClass = (): string =>
+  darkMode
+    ? "bg-[#6334B9] hover:bg-[#4B27A0] text-white" // hover darker shade
+    : "bg-[#6334B9] hover:bg-[#4B27A0] text-white";
+
+
 
   return (
-    <div className={`flex min-h-screen pt-20 transition-colors duration-500 ${getBackgroundColorClass()}`}>
-      {/* Sidebar */}
-      <div className={`w-80 border-r p-4 transition-colors duration-500 overflow-y-auto ${getSidebarColorClass()}`}>
-        <h1 className="text-xl font-bold mb-4">DSA Patterns</h1>
-        <div className="relative mb-6">
-          <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-purple-500"}`} />
-          <input
-            type="text"
-            placeholder="Search problems..."
-            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${getProblemSearchColorClass()}`}
-            value={problemSearchTerm}
-            onChange={(e) => setProblemSearchTerm(e.target.value)}
-          />
-        </div>
-        <ul className="space-y-3">
-          {patternsList.map((pattern) => (
-            <li key={pattern.category}>
-              <div
-                className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
-                  expandedCategory === pattern.category ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
-                }`}
-                onClick={() => {
-                  setExpandedCategory(expandedCategory === pattern.category ? String || null : pattern.category);
-                  setExpandedSubcategory(String || null);
-                }}
-              >
-                <div className="flex items-center space-x-2">
-                  {expandedCategory === pattern.category ? (
-                    <ChevronDown className="w-4 h-4" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4" />
-                  )}
-                  <span className="font-medium text-sm">{pattern.category}</span>
+    <div className={`flex flex-col lg:flex-row min-h-screen pt-20 transition-colors duration-500 ${getBackgroundColorClass()}`}>
+
+      {/* Mobile Toggle Button (Fixed Position to appear over content and respect pt-20) */}
+      <button
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className={`
+       fixed top-4 left-4 p-2 rounded-lg z-30 lg:hidden 
+        ${getPurpleButtonClass()}
+ `}
+        style={{ top: '80px' }}
+      >
+        {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      {/* Sidebar - Modified to be positioned correctly and responsive */}
+      <div
+        className={`
+    fixed top-0 left-0 w-80 border-r p-0 z-20 lg:z-10 
+    transition-transform duration-300 ease-in-out lg:translate-x-0 
+    lg:w-80 lg:relative lg:min-h-full
+    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    ${getSidebarColorClass()}
+  `}
+        style={{ top: '20px', height: 'calc(100vh - 40px)' }}
+      >
+
+        {/* Inner container now holds all padding to bring content up */}
+        <div className="p-4">
+          <h1 className="text-xl font-bold mb-4">DSA Patterns</h1>
+          <div className="relative mb-6">
+            <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-[#6334B9]" : "text-[#6334B9]"}`} />
+            <input
+              type="text"
+              placeholder="Search problems..."
+              className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${getProblemSearchColorClass()}`}
+              value={problemSearchTerm}
+              onChange={(e) => setProblemSearchTerm(e.target.value)}
+            />
+          </div>
+          <ul className="space-y-3">
+            {patternsList.map((pattern) => (
+              <li key={pattern.category}>
+                <div
+                  className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${expandedCategory === pattern.category ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
+                    }`}
+                  onClick={() => {
+                    setExpandedCategory(expandedCategory === pattern.category ? null : pattern.category);
+                    setExpandedSubcategory(null);
+                  }}
+                >
+                  <div className="flex items-center space-x-2">
+                    {expandedCategory === pattern.category ? (
+                      <ChevronDown className="w-4 h-4" />
+                    ) : (
+                      <ChevronRight className="w-4 h-4" />
+                    )}
+                    <span className="font-medium text-sm">{pattern.category}</span>
+                  </div>
+                  <span className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                    {getCategoryProgress(pattern.category)}
+                  </span>
                 </div>
-                <span className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                  {getCategoryProgress(pattern.category)}
-                </span>
-              </div>
-              {expandedCategory === pattern.category && (
-                <ul className="ml-6 mt-2 space-y-2">
-                  {pattern.subcategories.map((subcat) => (
-                    <li key={subcat.subcategory}>
-                      <div
-                        className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
-                          expandedSubcategory === subcat.subcategory ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
-                        }`}
-                        onClick={() => setExpandedSubcategory(expandedSubcategory === subcat.subcategory ? String || null : subcat.subcategory)}
-                      >
-                        <div className="flex items-center space-x-2">
-                          {expandedSubcategory === subcat.subcategory ? (
-                            <ChevronDown className="w-4 h-4" />
-                          ) : (
-                            <ChevronRight className="w-4 h-4" />
-                          )}
-                          <span className="font-medium text-sm">{subcat.subcategory}</span>
+                {expandedCategory === pattern.category && (
+                  <ul className="ml-6 mt-2 space-y-2">
+                    {pattern.subcategories.map((subcat) => (
+                      <li key={subcat.subcategory}>
+                        <div
+                          className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${expandedSubcategory === subcat.subcategory ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
+                            }`}
+                          onClick={() =>
+                            setExpandedSubcategory(expandedSubcategory === subcat.subcategory ? null : subcat.subcategory)
+                          }
+                        >
+                          <div className="flex items-center space-x-2">
+                            {expandedSubcategory === subcat.subcategory ? (
+                              <ChevronDown className="w-4 h-4" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4" />
+                            )}
+                            <span className="font-medium text-sm">{subcat.subcategory}</span>
+                          </div>
+                          <span className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                            {getSubcategoryProgress(pattern.category, subcat.subcategory)}
+                          </span>
                         </div>
-                        <span className={`text-xs font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                          {getSubcategoryProgress(pattern.category, subcat.subcategory)}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Main Content */}
+      {/* Overlay to close sidebar on mobile */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-10 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+
+      {/* Main Content Container */}
       <div className="flex-1 p-6 overflow-y-auto">
+
+        {/* Overall Progress Section - Now part of the main flex content */}
         <div className={`p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${getProgressSectionColorClass()}`}>
           <h2 className="text-xl font-bold mb-4">Overall Progress</h2>
           <div className="flex items-center space-x-6">
@@ -1521,7 +1621,7 @@ function Algorithm({ darkMode = false }) {
                     cy="48"
                   />
                   <circle
-                    className="stroke-current text-purple-500"
+                    className="stroke-current text-[#6334B9]"
                     strokeWidth="8"
                     strokeDasharray={40 * 2 * Math.PI}
                     strokeDashoffset={
@@ -1554,7 +1654,7 @@ function Algorithm({ darkMode = false }) {
                 <tr>
                   <th className="p-3 text-left w-1/12">Status</th>
                   <th className="p-3 text-left w-6/12">Problem Title</th>
-                  <th className="p-3 text-left w-5/12">Category</th>
+                  <th className="p-3 text-left w-5/12 hidden sm:table-cell">Category</th>
                 </tr>
               </thead>
               <tbody>
@@ -1565,7 +1665,7 @@ function Algorithm({ darkMode = false }) {
                         type="checkbox"
                         checked={p.solved}
                         onChange={() => handleCheckboxChange(p.id, p.category, p.subcategory)}
-                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                        className="w-4 h-4 text-[#6334B9] bg-gray-100 border-gray-300 rounded focus:ring-[#6334B9]"
                       />
                     </td>
                     <td className="p-3">
@@ -1578,7 +1678,7 @@ function Algorithm({ darkMode = false }) {
                         {p.title}
                       </a>
                     </td>
-                    <td className="p-3">
+                    <td className="p-3 hidden sm:table-cell">
                       <span className={`px-2 py-1 text-xs rounded-full ${darkMode ? "bg-blue-900 text-blue-200" : "bg-blue-100 text-blue-700"}`}>
                         {p.category} - {p.subcategory}
                       </span>

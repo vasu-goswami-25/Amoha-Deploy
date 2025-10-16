@@ -126,16 +126,16 @@ const NumbersProblems: React.FC<NumbersProps> = ({ darkMode }) => {
         // FIX: Wrapped dynamic class string in backticks and curly braces
         <div className={`flex min-h-screen transition-colors duration-500 pt-20 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}>
             {/* Sidebar */}
-            <div className={`w-72 border-r p-4 transition-colors duration-500 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
+            <div className={`w-72 border-r p-4 transition-colors duration-500 mt-6 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
                 <h1 className="text-lg font-bold mb-4">Filters</h1>
                 <div className="relative mb-6">
                     {/* FIX: Wrapped dynamic class string in backticks and curly braces */}
-                    <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-purple-500"}`} />
+                    <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-[#6334B9]"}`} />
                     <input
                         type="text"
                         placeholder="Search category..."
                         // FIX: Wrapped dynamic class string in backticks and curly braces
-                        className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode ? "bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-purple-400" : "bg-purple-50 border border-purple-200 text-black focus:ring-2 focus:ring-purple-500"}`}
+                        className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode ? "bg-gray-700 border border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]" : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]"}`}
                         value={categorySearchTerm}
                         onChange={(e: ChangeEvent<HTMLInputElement>) => setCategorySearchTerm(e.target.value)}
                     />
@@ -165,12 +165,12 @@ const NumbersProblems: React.FC<NumbersProps> = ({ darkMode }) => {
                     <h1 className="text-xl font-bold mb-2">Numbers Problems</h1>
                     <div className="relative">
                         {/* FIX: Wrapped dynamic class string in backticks and curly braces */}
-                        <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-purple-500"}`} />
+                        <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-[#6334B9]" : "text-[#6334B9]"}`} />
                         <input
                             type="text"
                             placeholder="Search problem..."
                             // FIX: Wrapped dynamic class string in backticks and curly braces
-                            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode ? "bg-gray-700 border border-gray-600 text-white focus:ring-2 focus:ring-purple-400" : "bg-purple-50 border border-purple-200 text-black focus:ring-2 focus:ring-purple-500"}`}
+                            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode ? "bg-gray-700 border  border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]" : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]"}`}
                             value={problemSearchTerm}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setProblemSearchTerm(e.target.value)}
                         />

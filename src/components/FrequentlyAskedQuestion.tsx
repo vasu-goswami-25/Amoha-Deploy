@@ -53,7 +53,7 @@ interface FrequentlyAskedQuestionsProps {
 const FrequentlyAskedQuestions: FC<FrequentlyAskedQuestionsProps> = ({ darkMode }) => {
   return (
     <div className={`max-w-6xl mx-auto px-4 py-12`}>
-      <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-left ${darkMode ? "text-white" : "text-black"}`}>
+      <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-10 text-left ${darkMode ? "text-white" : "text-black" }`}>
         Frequently Asked Questions
       </h2>
       <div>

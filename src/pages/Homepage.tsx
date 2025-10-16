@@ -26,9 +26,6 @@ const Homepage = ({ darkMode }: HomepageProps) => {
    <OurTeam darkMode={darkMode}/>
    <FAQ darkMode={darkMode}/>
    </div>
-
-
-
    </>
   )
 }

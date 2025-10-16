@@ -21,6 +21,7 @@ const Careers: FC<AppProps> = ({ darkMode }) => {
     <div className={darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}>
       <h1 className="text-2xl font-bold">Careers</h1>
       <p>Welcome to our careers section!</p>
+      
     </div>
   );
 };

@@ -14,9 +14,9 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
 
   const links = [
     { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
+    { name: "Tutorials", path: "/about" },
     { name: "Practice", path: "/practice" },
-    { name: "Courses", path: "/courses" },
+    // { name: "Courses", path: "/courses" },
     { name: "Careers", path: "/careers" },
     { name: "Contact", path: "/contact" },
   ];
@@ -24,36 +24,43 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
   return (
     <>
       {/* Navbar */}
-      <div className="absolute top-0 left-0 w-full z-20">
-        <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 md:px-20 py-4 sm:py-6">
-          {/* Logo */}
+      <div className="absolute top-0 left-0 w-full z-20 ">
+        <div className="container mx-auto flex justify-between items-center px-4 sm:px-6 md:px-20 py-4 sm:py-6 ">
+          {/* LEFT CODES */}
           <h1 className="text-xl sm:text-2xl font-bold">
-            <span style={{ color: "#6334B9" }}>Amoha</span> {' '}
-            <span className={`${darkMode ? "text-white": "text-black"}`}>Codes</span>
+           <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
+            <span style={{ color: "#6334B9" }}>Amoha</span>{" "}
+            <span className={`${darkMode ? "text-white" : "text-black"}`}>Codes</span>
+           </a>
           </h1>
 
-          {/* Desktop Links */}
+         {/* Desktop Links */}
           <div className="hidden md:flex flex-1 justify-center items-center">
-            <ul className="flex flex-wrap gap-4 lg:gap-6 font-inter text-base lg:text-lg">
-              {links.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    to={link.path}
-                    className={`cursor-pointer ${darkMode ? "text-white": ""}`}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="flex flex-wrap gap-4 lg:gap-6 font-inter text-base lg:text-lg">
+            {links.map((link) => (
+              <li key={link.name}>
+                <Link
+                  to={link.path}
+                  className={`cursor-pointer transition-colors duration-300 
+                    ${darkMode 
+                      ? "text-white hover:text-[#6334B9]"  // Dark mode: white → purple
+                      : "text-gray-900 hover:text-[#6334B9]" // Light mode: dark gray → purple
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
 
           {/* Right Icons */}
           <div className="hidden md:flex items-center gap-3 lg:gap-4">
             {/* Dark Mode */}
             <div
               className={`w-10 h-5 sm:w-12 sm:h-6 rounded-full flex items-center p-1 cursor-pointer transition-all ${
-                darkMode ? "bg-yellow-400" : "bg-purple-700"
+                darkMode ? "bg-yellow-400" : "bg-[#6334B9] "
               }`}
               onClick={() => setDarkMode(!darkMode)}
             >
@@ -61,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                 className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-xs transition-transform ${
                   darkMode
                     ? "translate-x-5 sm:translate-x-6 bg-yellow-400 text-black"
-                    : "bg-[#1a084b] text-white"
+                    : "bg-gray-800  text-white"
                 }`}
               >
                 {darkMode ? <FaSun /> : <FaMoon />}
@@ -71,7 +78,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
             {/* User Icon */}
             <button
               onClick={() => setModalOpen(true)}
-              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-purple-700 text-purple-700 hover:bg-purple-700 hover:text-white transition-colors"
+              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#6334B9] text-[#6334B9] hover:bg-[#6334B9] hover:text-white transition-colors"
             >
               <FaUser size={16} className="sm:size-[18px]" />
             </button>
@@ -101,7 +108,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                   <Link
                     to={link.path}
                     onClick={() => setMenuOpen(false)}
-                    className="cursor-pointer hover:text-purple-500"
+                    className="cursor-pointer hover:text-[#6334B9] "
                   >
                     {link.name}
                   </Link>
@@ -121,14 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
           >
             <LoginSignup onClose={() => setModalOpen(false)} />
           </div>
-        </div><div className="fixed inset-0 flex items-center justify-center z-50 p-6">
-            <div
-              className="relative w-full max-w-5xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <LoginSignup onClose={() => setModalOpen(false)} />
-            </div>
-          </div></>
+        </div></>
 
       )}
  

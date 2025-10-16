@@ -21,28 +21,42 @@ const Home: React.FC<HomeProps> = ({ darkMode }) => {
       }}
     >
       {/* Logo */}
-      <img
-        src={bigLogo}
-        alt="Big Logo"
-        className="-mt-12 sm:-mt-16 md:-mt-20 w-4/5 sm:w-3/4 md:w-3/5 lg:w-2/5 max-w-[900px] h-auto mx-auto transition-all duration-300 -mb-12"
-        style={{ filter: darkMode ? "invert(1)" : "invert(0)" }}
-      />
+          <img
+              src={bigLogo}
+              alt="Big Logo"
+              className="animate-slow-bounce -mt-2 sm:-mt-2 md:mt-8 w-4/5 sm:w-3/4 md:w-3/5 lg:w-2/5 max-w-[900px] h-auto mx-auto transition-all duration-300 -mb-12"
+              style={{ filter: darkMode ? "invert(1)" : "invert(0)" }}
+            />
+
+            {/* 🔹 Custom animation defined inline */}
+            <style>
+              {`
+                @keyframes slow-bounce {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-40px); } /* ⬆️ higher bounce */
+                }
+                .animate-slow-bounce {
+                  animation: slow-bounce 2s ease-in-out infinite; /* ⏩ faster bounce */
+                }
+              `}
+            </style>
+
 
       {/* Heading */}
-      <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl mt-4 -mb-4 sm:mt-8 md:mt-10 font-semibold">
+      <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl mt-8 -mb-4 sm:mt-8 md:-mt-10 font-semibold">
        <span style={darkMode ? { color: "white" } : {color: "black"}}> Welcome to </span>
         <span style={{ color: "#6334B9" }}>Amoha Codes</span>
       </h2>
 
       {/* Subtitle */}
-      <span className="font-ibarra text-sm sm:text-base md:text-lg lg:text-2xl text-gray-500 mt-4 -mb-2 sm:mt-4">
+      <span className="font-ibarra text-sm sm:text-base md:text-lg lg:text-2xl text-gray-500 mt-4 -mb-4 sm:mt-4">
         "Empowering Dreams Through Education"
       </span>
 
       {/* CTA Button */}
       <Link
         to="/practice"
-        className="px-5 sm:px-6 py-2 sm:py-3 text-sm sm:text-base md:text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition duration-300 mt-2 sm:mt-8 cursor-pointer"
+        className="px-5 sm:px-6 py-2 sm:py-3 text-sm sm:text-base md:text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition duration-300 mt-6 sm:mt-8 cursor-pointer"
         style={{
           backgroundColor: "#6334B9",
           color: "#fff",

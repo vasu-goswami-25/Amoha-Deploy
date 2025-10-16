@@ -79,15 +79,15 @@ const CourseCard: FC<CourseCardProps> = ({ course, darkMode }) => (
     className={`
       rounded-lg shadow-md border overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl flex flex-col w-full sm:w-80
       ${darkMode 
-        ? 'bg-gray-800 border-purple-400 hover:shadow-lg hover:shadow-purple-500/30' 
-        : 'bg-white border-purple-700'
+        ? 'bg-gray-800 border-[#6334B9] hover:shadow-lg hover:shadow-purple-500/30' 
+        : 'bg-white border-[#6334B9]'
       }
     `}
   >
     <img src={course.image} alt={course.title} className="w-full h-48 object-contain p-4 rounded-2xl" />
     <div className="p-4 flex flex-col flex-grow">
       {/* Category text color is made theme-aware */}
-      <div className={`text-sm font-medium mb-2 ${darkMode ? 'text-purple-400' : 'text-purple-800'}`}>
+      <div className={`text-sm font-medium mb-2 ${darkMode ? 'text-[#6334B9]' : 'text-[#6334B9]'}`}>
         {course.category}
       </div>
       {/* Title text color is made theme-aware */}
@@ -95,7 +95,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, darkMode }) => (
         {course.title}
       </h3>
       {/* Description text color is made theme-aware */}
-      <p className={`text-sm mb-4 line-clamp-3 ${darkMode ? 'text-purple-300' : 'text-purple-800'}`}>
+      <p className={`text-sm mb-4 line-clamp-3 ${darkMode ? 'text-purple-300' : 'text-[#6334B9]'}`}>
         {course.description}
       </p>
       <div className="flex items-center mb-4">
@@ -118,7 +118,7 @@ const CourseCard: FC<CourseCardProps> = ({ course, darkMode }) => (
       </div>
       <button 
         // Button style remains consistent, using brand colors
-        className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-lg mt-auto cursor-pointer"
+        className="w-full bg-[#6334B9] hover:bg-[#6334B9] text-white font-bold py-2 px-4 rounded-lg transition duration-300 shadow-lg mt-auto cursor-pointer"
       >
         Enroll Now
       </button>
@@ -143,7 +143,7 @@ const CoursesSection: FC<CoursesSectionProps> = ({ darkMode }) => {
             {/* View all link is made theme-aware */}
             {/* <a 
               href="#" 
-              className={`font-medium hover:underline ${darkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-800 hover:text-purple-900'}`}
+              className={`font-medium hover:underline ${darkMode ? 'text-[#6334B9] hover:text-purple-300' : 'text-[#6334B9] hover:text-purple-900'}`}
             >
               View all
             </a> */}

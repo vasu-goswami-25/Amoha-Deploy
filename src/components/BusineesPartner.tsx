@@ -6,13 +6,18 @@ interface BusinessPartnersProps {
 }
 
 // Dummy logo URLs (replace with your actual imports)
- import googleLogo from "../assets/google.png";
- import microsoftLogo from "../assets/microsoft.png";
- import amazonLogo from "../assets/amazon.png";
+ import  One from "../assets/One.png";
+ import  Two from "../assets/Two.png";
+ import  Three from "../assets/Three.png";
+ import  Four from "../assets/Four.png";
+ import  Five from "../assets/Five.png";
+ import  Six from "../assets/Six.png";
+ 
+ 
 
 
 const BusinessPartners: FC<BusinessPartnersProps> = ({ darkMode }) => {
-  const logos = [googleLogo, microsoftLogo, amazonLogo];
+  const logos = [One,Two,Three,Four,Five,Six];
 
   return (
     <section
@@ -32,7 +37,7 @@ const BusinessPartners: FC<BusinessPartnersProps> = ({ darkMode }) => {
             darkMode ? "text-white" : "text-black"
           }`}
         >
-          Business Partners
+          Student Placed at
         </h2>
 
         {/* Scrolling logos */}
@@ -62,7 +67,7 @@ const BusinessPartners: FC<BusinessPartnersProps> = ({ darkMode }) => {
           .animate-marquee-reverse {
             display: flex;
             gap: 2rem;
-            animation: marquee-reverse 10s linear infinite;
+            animation: marquee-reverse 5s linear infinite;
           }
         `}
       </style>
@@ -71,3 +76,5 @@ const BusinessPartners: FC<BusinessPartnersProps> = ({ darkMode }) => {
 };
 
 export default BusinessPartners;
+
+

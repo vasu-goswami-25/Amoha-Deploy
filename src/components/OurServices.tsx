@@ -26,12 +26,12 @@ const Services: FC<ServicesProps> = ({ darkMode }) => {
         >
           <BookOpen
             className={`w-10 h-10 mx-auto mb-3 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           />
           <h4
             className={`text-xl font-bold mb-2 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           >
             Curated Courses
@@ -50,12 +50,12 @@ const Services: FC<ServicesProps> = ({ darkMode }) => {
         >
           <Code
             className={`w-10 h-10 mx-auto mb-3 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           />
           <h4
             className={`text-xl font-bold mb-2 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           >
             Practice Challenges
@@ -74,12 +74,12 @@ const Services: FC<ServicesProps> = ({ darkMode }) => {
         >
           <Briefcase
             className={`w-10 h-10 mx-auto mb-3 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           />
           <h4
             className={`text-xl font-bold mb-2 ${
-              darkMode ? "text-purple-400" : "text-purple-700"
+              darkMode ? "text-purple-400" : "text-[#6334B9]"
             }`}
           >
             Internship Opportunities

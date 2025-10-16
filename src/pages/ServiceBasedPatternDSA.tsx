@@ -1,5 +1,7 @@
+
 import { useState } from "react";
 import { Search, ChevronDown, ChevronRight } from "lucide-react";
+
 
 // --- Data Structure (Backend Logic) ---
 const dsaPatterns = [
@@ -391,12 +393,12 @@ const createInitialState = () => {
   }));
 };
 
-// --- Frontend Component (UI Logic) ---
 function ServiceBasedPatternDsa({ darkMode = false }) {
   const [patternsList, setPatternsList] = useState(createInitialState);
   const [problemSearchTerm, setProblemSearchTerm] = useState("");
-  const [expandedCategory, setExpandedCategory] = useState(String || null);
-  const [expandedSubcategory, setExpandedSubcategory] = useState(String || null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedSubcategory, setExpandedSubcategory] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // For mobile toggle
 
   const handleCheckboxChange = (problemId: number, category: string, subcategory: string) => {
     setPatternsList((prevList) =>
@@ -462,23 +464,34 @@ function ServiceBasedPatternDsa({ darkMode = false }) {
   const getBackgroundColorClass = () => (darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900");
   const getSidebarColorClass = () => (darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200");
   const getProgressSectionColorClass = () => (darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900");
-  const getProblemSearchColorClass = () => (darkMode ? "bg-gray-700 border-gray-600 text-white focus:ring-purple-400" : "bg-purple-50 border-purple-200 text-black focus:ring-purple-500");
+  const getProblemSearchColorClass = () => (darkMode ? "bg-gray-700 border  border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]" : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]");
   const getTableColorClass = () => (darkMode ? "border-gray-700" : "border-gray-200");
   const getTableHeaderColorClass = () => (darkMode ? "bg-gray-700" : "bg-gray-100");
   const getTableRowColorClass = () => (darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-gray-50");
-  const getProblemTitleColorClass = () => (darkMode ? "text-gray-200 hover:text-purple-400" : "text-gray-900 hover:text-purple-600");
+  const getProblemTitleColorClass = () => (darkMode ? "text-gray-200 hover:text-[#6334B9]" : "text-gray-900 hover:text-[#6334B9]");
 
   return (
-    <div className={`flex min-h-screen pt-20 transition-colors duration-500 ${getBackgroundColorClass()}`}>
+    <div className={`flex flex-col md:flex-row min-h-screen pt-20 transition-colors duration-500 ${getBackgroundColorClass()}`}>
+      {/* Mobile Header for Sidebar */}
+      <div className="md:hidden flex justify-between items-center p-4 border-b">
+        <h1 className="text-xl font-bold">DSA Patterns</h1>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className={`p-2 rounded-md ${darkMode ? "bg-gray-700 text-white" : "bg-gray-100 text-gray-900"}`}
+        >
+          {sidebarOpen ? "Close" : "Menu"}
+        </button>
+      </div>
+
       {/* Sidebar */}
-      <div className={`w-80 border-r p-4 transition-colors duration-500 overflow-y-auto ${getSidebarColorClass()}`}>
-        <h1 className="text-xl font-bold mb-4">DSA Patterns</h1>
+      <div className={`fixed md:relative z-20 top-0 left-0 h-full w-72 md:w-80 border-r p-4 overflow-y-auto transition-transform duration-300 mt-5 ${getSidebarColorClass()} ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
+        <h1 className="hidden md:block text-xl font-bold mb-4">DSA Patterns</h1>
         <div className="relative mb-6">
-          <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-purple-300" : "text-purple-500"}`} />
+          <Search className={`absolute left-3 top-2.5 w-4 h-4 ${darkMode ? "text-[#6334B9]" : "text-[#6334B9]"}`} />
           <input
             type="text"
             placeholder="Search problems..."
-            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${getProblemSearchColorClass()}`}
+            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none  duration-300 ${getProblemSearchColorClass()}`}
             value={problemSearchTerm}
             onChange={(e) => setProblemSearchTerm(e.target.value)}
           />
@@ -487,12 +500,10 @@ function ServiceBasedPatternDsa({ darkMode = false }) {
           {patternsList.map((pattern) => (
             <li key={pattern.category}>
               <div
-                className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
-                  expandedCategory === pattern.category ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
-                }`}
+                className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${expandedCategory === pattern.category ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")}`}
                 onClick={() => {
-                  setExpandedCategory(expandedCategory === pattern.category ? String || null : pattern.category);
-                  setExpandedSubcategory(String || null);
+                  setExpandedCategory(expandedCategory === pattern.category ? null : pattern.category);
+                  setExpandedSubcategory(null);
                 }}
               >
                 <div className="flex items-center space-x-2">
@@ -512,10 +523,8 @@ function ServiceBasedPatternDsa({ darkMode = false }) {
                   {pattern.subcategories.map((subcat) => (
                     <li key={subcat.subcategory}>
                       <div
-                        className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
-                          expandedSubcategory === subcat.subcategory ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
-                        }`}
-                        onClick={() => setExpandedSubcategory(expandedSubcategory === subcat.subcategory ? String || null : subcat.subcategory)}
+                        className={`flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${expandedSubcategory === subcat.subcategory ? (darkMode ? "bg-gray-700" : "bg-gray-100") : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")}`}
+                        onClick={() => setExpandedSubcategory(expandedSubcategory === subcat.subcategory ? null : subcat.subcategory)}
                       >
                         <div className="flex items-center space-x-2">
                           {expandedSubcategory === subcat.subcategory ? (
@@ -539,50 +548,65 @@ function ServiceBasedPatternDsa({ darkMode = false }) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        <div className={`p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${getProgressSectionColorClass()}`}>
+      <div className="flex-1 p-4 md:p-6 overflow-y-auto md:ml-0">
+        <div className={`p-4 md:p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${getProgressSectionColorClass()}`}>
           <h2 className="text-xl font-bold mb-4">Overall Progress</h2>
-          <div className="flex items-center space-x-6">
-            <div className="flex flex-col items-start min-w-[120px]">
-              <span className="text-2xl font-bold">
-                {solvedProblems} / {totalProblems}
-              </span>
-              <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-800"}`}>
-                Problems Solved
-              </p>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="w-24 h-24 relative">
-                <svg className="w-full h-full transform -rotate-90">
-                  <circle
-                    className={`stroke-current ${darkMode ? "text-gray-700" : "text-gray-300"}`}
-                    strokeWidth="8"
-                    fill="transparent"
-                    r="40"
-                    cx="48"
-                    cy="48"
-                  />
-                  <circle
-                    className="stroke-current text-purple-500"
-                    strokeWidth="8"
-                    strokeDasharray={40 * 2 * Math.PI}
-                    strokeDashoffset={
-                      40 * 2 * Math.PI - (completionPercentage / 100) * (40 * 2 * Math.PI)
-                    }
-                    strokeLinecap="round"
-                    fill="transparent"
-                    r="40"
-                    cx="48"
-                    cy="48"
-                  />
-                </svg>
-                <span className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl ${darkMode ? "text-white" : "text-gray-900"}`}>
-                  {completionPercentage}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div className="flex items-center justify-start gap-8 flex-wrap">
+             <div className="flex flex-col items-start min-w-[120px]">
+        <span className="text-2xl font-bold">
+          {solvedProblems} / {totalProblems}
+        </span>
+              <p
+          className={`text-sm ${
+            darkMode ? "text-gray-400" : "text-gray-800"
+          }`}
+        >
+          Problems Solved
+        </p>
+      </div>
+                 {/* Right Side - Circle */}
+      <div className="w-20 h-20 relative -translate-y-1">
+        <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
+          {/* Background circle */}
+          <circle
+            className={`stroke-current ${
+              darkMode ? "text-gray-700" : "text-gray-300"
+            }`}
+            strokeWidth="8"
+            fill="transparent"
+            r="40"
+            cx="50"
+            cy="50"
+          />
+                 {/* Progress circle */}
+          <circle
+            className="stroke-current text-[#6334B9]"
+            strokeWidth="8"
+            strokeDasharray={40 * 2 * Math.PI}
+            strokeDashoffset={
+              40 * 2 * Math.PI -
+              (completionPercentage / 100) * (40 * 2 * Math.PI)
+            }
+                 strokeLinecap="round"
+            fill="transparent"
+            r="40"
+            cx="50"
+            cy="50"
+          />
+        </svg>
+                
+                   {/* Percentage text */}
+        <span
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-lg ${
+            darkMode ? "text-white" : "text-gray-900"
+          }`}
+        >
+          {completionPercentage}%
+        </span>
+                 </div>
+    </div>
+  </div>
+   
 
         <h2 className="text-2xl font-bold mb-4">Problem List</h2>
         {filteredProblems.length === 0 ? (
@@ -607,7 +631,7 @@ function ServiceBasedPatternDsa({ darkMode = false }) {
                         type="checkbox"
                         checked={p.solved}
                         onChange={() => handleCheckboxChange(p.id, p.category, p.subcategory)}
-                        className="w-4 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500"
+                        className="w-4 h-4 text-[#6334B9] bg-gray-100 border-gray-300 rounded focus:ring-[#6334B9]"
                       />
                     </td>
                     <td className="p-3">

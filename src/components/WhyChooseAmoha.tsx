@@ -148,7 +148,7 @@ const featuresData: Feature[] = [
     id: "features-tab-2",
     title: "Comprehensive Curriculum",
     icon: BoxSeamIcon,
-    iconColor: "#6334b9",
+    iconColor: "#6334B9",
     description: [
       "Beginner to Advanced: Our curriculum covers everything from foundational concepts to advanced topics, making it suitable for learners at all levels.",
       "Structured Modules: Courses are broken into easy-to-follow modules, ensuring a clear and progressive learning experience.",
@@ -232,8 +232,8 @@ const WhyChooseAmoha: FC<WhyChooseAmohaProps> = ({ darkMode }) => {
                   onClick={() => setActiveTab(feature.id)}
                   className={`w-full flex flex-col items-center p-4 rounded-lg transition-all duration-300 transform cursor-pointer ${
                     isActive
-                      ? "bg-[#6334b9] text-white shadow-lg scale-105"
-                      : `${darkMode ? "bg-gray-800 border border-gray-600 text-gray-300" : "bg-white border border-gray-200 text-gray-600"} hover:bg-purple-800 hover:text-white`
+                      ? "bg-[#6334B9] text-white shadow-lg scale-105"
+                      : `${darkMode ? "bg-gray-800 border border-gray-600 text-gray-300" : "bg-white border border-gray-200 text-gray-600"} hover:bg-[#6334B9] hover:text-white`
                   }`}
                 >
                   <div className="w-15 h-15 md:w-20 md:h-20 flex items-center justify-center rounded-full mb-2">
@@ -257,7 +257,7 @@ const WhyChooseAmoha: FC<WhyChooseAmohaProps> = ({ darkMode }) => {
               {activeFeature.description.map((item, index) => (
                 <li key={index} className="flex items-start">
                   <svg
-                    className="flex-shrink-0 w-6 h-6 text-[#6334b9] mt-1 mr-3"
+                    className="flex-shrink-0 w-6 h-6 text-[#6334B9] mt-1 mr-3"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >

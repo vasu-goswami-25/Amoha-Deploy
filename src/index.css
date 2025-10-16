@@ -12,5 +12,8 @@
 .animate-marquee {
   display: flex;
   gap: 1.5rem;
-  animation: marquee 20s linear infinite;
+  animation: marquee 40s linear infinite;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
 }

@@ -8,7 +8,7 @@ interface LearnersStatsProps {
 const LearnersStats: FC<LearnersStatsProps> = ({ darkMode }) => {
   return (
     <div className="max-w-6xl mx-auto mb-12 ">
-    <div className="flex flex-wrap grid grid-cols-1 sm:grid-cols-2 gap-2 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <div
         className={`border-[1px] border-[#6334B9] hover:border-[#c1ade3] hover:shadow-lg rounded-lg px-6 py-4 shadow text-center ${
           darkMode ? "bg-gray-700" : "bg-gray-50"
@@ -16,7 +16,7 @@ const LearnersStats: FC<LearnersStatsProps> = ({ darkMode }) => {
       >
         <h3
           className={`text-2xl font-bold ${
-            darkMode ? "text-purple-400" : "text-purple-700"
+            darkMode ? "text-[#6334B9]" : "text-[#6334B9]"
           }`}
         >
           10,000+
@@ -31,7 +31,7 @@ const LearnersStats: FC<LearnersStatsProps> = ({ darkMode }) => {
       >
         <h3
           className={`text-2xl font-bold ${
-            darkMode ? "text-purple-400" : "text-purple-700"
+            darkMode ? "text-[#6334B9]" : "text-[#6334B9]"
           }`}
         >
           1,000+

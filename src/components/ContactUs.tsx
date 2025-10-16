@@ -153,8 +153,8 @@ const App: FC<AppProps> = ({ darkMode }) => {
                   type="submit"
                   className={`font-bold py-3 px-8 rounded-lg transition duration-300 cursor-pointer ${
                     darkMode
-                      ? "bg-purple-700 text-white hover:bg-purple-800"
-                      : "bg-purple-700 text-white hover:bg-purple-800"
+                      ? "bg-[#6334B9] text-white hover:bg-[#250c53]"
+                      : "bg-[#6334B9] text-white hover:bg-[#250c53]"
                   }`}
                 >
                   Submit

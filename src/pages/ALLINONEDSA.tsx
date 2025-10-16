@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { Search } from "lucide-react";
 
@@ -818,21 +819,18 @@ const allProblems = Object.entries(allProblemsData).flatMap(([topic, problems]) 
   }))
 );
 
-// Define Problem type for clarity
+// Define Problem type
 type Problem = (typeof allProblems)[number];
 
-// Main Component
 function ALLINONEDSA({ darkMode = false }) {
   const [questionsList, setQuestionsList] = useState<Problem[]>(allProblems);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
-
   const [problemSearchTerm, setProblemSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   // --- Handlers ---
-
   const handleCheckboxChange = (id: number) => {
     setQuestionsList((prevList) =>
       prevList.map((q) => (q.id === id ? { ...q, solved: !q.solved } : q))
@@ -854,7 +852,7 @@ function ALLINONEDSA({ darkMode = false }) {
     setCurrentPage(1);
   };
 
-  // --- Filtered Problems Logic (Memoized for performance) ---
+  // --- Filtered Problems Logic ---
   const filteredProblems = useMemo(() => {
     return questionsList.filter((q) => {
       const matchesTopic = !selectedTopic || q.topic === selectedTopic;
@@ -871,41 +869,34 @@ function ALLINONEDSA({ darkMode = false }) {
   const endIndex = Math.min(startIndex + PROBLEMS_PER_PAGE, filteredProblems.length);
   const currentProblems = filteredProblems.slice(startIndex, endIndex);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+const handleNextPage = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+const handlePreviousPage = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
 
   // --- Utility Functions ---
   const getFilterProgress = (filter: string, type: string) => {
     let filteredList: Problem[] = [];
-
-    if (type === "topic") {
-      filteredList = questionsList.filter(q => q.topic === filter);
-    } else if (type === "difficulty") {
-      filteredList = questionsList.filter(q => q.difficulty === filter);
-    } else if (type === "status") {
-      filteredList = questionsList.filter(q => (filter === "Solved" ? q.solved : !q.solved));
-    } else {
-      // Default case if needed, though arguments should match types
-      return "(0/0)";
-    }
-
+    if (type === "topic") filteredList = questionsList.filter(q => q.topic === filter);
+    else if (type === "difficulty") filteredList = questionsList.filter(q => q.difficulty === filter);
+    else if (type === "status") filteredList = questionsList.filter(q => (filter === "Solved" ? q.solved : !q.solved));
     const solvedCount = filteredList.filter(q => q.solved).length;
     return `(${solvedCount}/${filteredList.length})`;
   };
 
-
   const getDifficultyColorClass = (difficulty: string) => {
     switch (difficulty) {
-      case "Easy": return "text-green-500";
+      case "Easy": return "text-[#22C55E]";
       case "Medium": return "text-yellow-500";
       case "Hard": return "text-red-500";
       default: return "text-gray-500";
@@ -913,216 +904,231 @@ function ALLINONEDSA({ darkMode = false }) {
   };
 
   const getDifficultyBgColorClass = (difficulty: string) => {
-    switch (difficulty) {
-      case "Easy": return "bg-green-100 dark:bg-green-900/50";
-      case "Medium": return "bg-yellow-100 dark:bg-yellow-900/50";
-      case "Hard": return "bg-red-100 dark:bg-red-900/50";
-      default: return "bg-gray-100 dark:bg-gray-700/50";
+     switch (difficulty) {
+      case "Easy":
+        return darkMode
+         ? "bg-green-900 text-green-300"
+          : "bg-green-100 text-green-700";
+      case "Medium":
+        // Fixed the class names to use orange for medium (matching the map)
+        return darkMode
+          ? "bg-yellow-100 text-yellow-700"
+          : "bg-yellow-400 text-yellow-700";
+      case "Hard":
+        return darkMode ? "bg-red-900 text-red-300" : "bg-red-100 text-red-700";
+      default:
+        return darkMode
+          ? "bg-gray-700 text-gray-300"
+          : "bg-gray-200 text-gray-800";
     }
   };
 
-  // Progress calculations for the filtered list
+  // Progress Bar Calculation
   const progressSolvedCount = filteredProblems.filter(q => q.solved).length;
   const progressTotalCount = filteredProblems.length;
   const progressPercentageForFiltered = progressTotalCount > 0 ? (progressSolvedCount / progressTotalCount) * 100 : 0;
 
-  return (
-    <div className={`flex min-h-screen transition-colors duration-500 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
-      {/* Sidebar */}
-      <aside className={`w-72 border-r p-6 overflow-y-auto transition-colors duration-500 mt-20 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}>
-
-
-        {/* Topics Filter */}
-        <section className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">TOPICS</h2>
-          <div className="space-y-2">
-            {allTopics.map(topic => (
-              <label key={topic} className="flex items-center justify-between space-x-2 cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedTopic === topic}
-                    onChange={() => handleTopicChange(topic)}
-                    className="rounded text-purple-600 focus:ring-purple-500 bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-                  />
-                  <span className="text-sm">{topic}</span>
-                </div>
-                <span className={`text-xs text-gray-500 ${darkMode ? "text-gray-400" : ""}`}>
-                  {getFilterProgress(topic, "topic")}
-                </span>
-              </label>
-            ))}
-          </div>
-        </section>
-
-        {/* Difficulty Filter */}
-        <section className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">DIFFICULTY</h2>
-          <div className="space-y-2">
-            {allDifficulties.map(difficulty => (
-              <label key={difficulty} className="flex items-center justify-between space-x-2 cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedDifficulty === difficulty}
-                    onChange={() => handleDifficultyChange(difficulty)}
-                    className="rounded text-purple-600 focus:ring-purple-500 bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-                  />
-                  <span className="text-sm">{difficulty}</span>
-                </div>
-                <span className={`text-xs text-gray-500 ${darkMode ? "text-gray-400" : ""}`}>
-                  {getFilterProgress(difficulty, "difficulty")}
-                </span>
-              </label>
-            ))}
-          </div>
-        </section>
-
-        {/* Status Filter */}
-        <section>
-          <h2 className="text-lg font-semibold mb-2">STATUS</h2>
-          <div className="space-y-2">
-            {allStatuses.map(status => (
-              <label key={status} className="flex items-center justify-between space-x-2 cursor-pointer">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedStatus === status}
-                    onChange={() => handleStatusChange(status)}
-                    className="rounded text-purple-600 focus:ring-purple-500 bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-                  />
-                  <span className="text-sm">{status}</span>
-                </div>
-                <span className={`text-xs text-gray-500 ${darkMode ? "text-gray-400" : ""}`}>
-                  {getFilterProgress(status, "status")}
-                </span>
-              </label>
-            ))}
-          </div>
-        </section>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 p-6 mt-20">
-
-        {/* Header/Title moved here */}
-        <h1 className="text-2xl font-bold mb-6">Problem Progress</h1>
-
-        {/* Progress Bar (Remains in the same spot, under the title) */}
-        <div className={`p-4 rounded-lg transition-colors duration-500 ${darkMode ? "bg-gray-800" : "bg-white"} mb-6`}>
-          <div className="flex items-center justify-between text-sm mb-2">
-            <span>{progressSolvedCount} of {progressTotalCount} Problems Solved</span>
-            <span>{Math.round(progressPercentageForFiltered) || 0}%</span>
-          </div>
-          <div className="w-full h-2 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
-            <div
-              className="h-full bg-purple-500"
-              style={{ width: `${progressPercentageForFiltered}%` }}
-            ></div>
-          </div>
-        </div>
-
-        {/* Problem List Header and Search Bar (Moved/combined here) */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold">
-            Problem List
-          </h2>
-          {/* Search Bar */}
-          <div className="relative">
-            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${darkMode ? "text-gray-400" : "text-gray-500"}`} />
-            <input
-              type="text"
-              placeholder="Search problems..."
-              className={`w-64 pl-10 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode ? "bg-gray-700 text-white border border-gray-600 focus:border-purple-500" : "bg-white text-gray-900 border border-gray-300 focus:border-purple-500"
-                }`}
-              value={problemSearchTerm}
-              onChange={(e) => {
-                setProblemSearchTerm(e.target.value);
-                setCurrentPage(1);
-              }}
-            />
-          </div>
-        </div>
-
-
-        {/* Main Problem List Table */}
-        {filteredProblems.length === 0 ? (
-          <p className={`text-center py-10 text-gray-500 ${darkMode ? "text-gray-400" : ""}`}>
-            No problems found for the selected filters.
-          </p>
-        ) : (
-          <>
-            <div className="overflow-x-auto shadow-md rounded-lg">
-              <table className={`w-full transition-colors duration-500 ${darkMode ? "text-gray-300" : "text-gray-500"}`}>
-                <thead className={`text-sm uppercase ${darkMode ? "bg-gray-700 text-gray-400" : "bg-gray-100 text-gray-700"}`}>
-                  <tr>
-                    <th className="p-3 text-left w-1/12">Status</th>
-                    <th className="p-3 text-left w-9/12">Problem Title</th>
-                    <th className="p-3 text-left w-2/12">Difficulty</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentProblems.map((q) => (
-                    <tr
-                      key={q.id}
-                      className={`border-t ${darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-gray-50"}`}
-                    >
-                      <td className="p-3">
-                        <input
-                          type="checkbox"
-                          checked={q.solved}
-                          onChange={() => handleCheckboxChange(q.id)}
-                          className="w-4 h-4 text-purple-600 bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-purple-500"
-                        />
-                      </td>
-                      <td className="p-3">
-                        <a
-                          href={createLeetCodeLink(q.title)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`font-medium ${darkMode ? "text-gray-200 hover:text-purple-400" : "text-gray-900 hover:text-purple-600"}`}
-                        >
-                          {q.title}
-                        </a>
-                      </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyBgColorClass(q.difficulty)} ${getDifficultyColorClass(q.difficulty)}`}>
-                          {q.difficulty}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination Controls */}
-            <div className="flex justify-between items-center mt-6">
-              <button
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${currentPage === 1 ? "bg-gray-300 text-gray-500 cursor-not-allowed" : darkMode ? "bg-purple-600 hover:bg-purple-700 text-white" : "bg-purple-500 hover:bg-purple-600 text-white"
-                  }`}
-              >
-                Previous
-              </button>
-              <span className={`text-sm font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
-                Page {currentPage} of {totalPages}
+ return (
+  <div className={`flex flex-col md:flex-row min-h-screen transition-colors duration-500 mt-1 ${darkMode ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
+    
+    {/* Sidebar */}
+    <aside
+      className={`w-full md:w-72 border-b md:border-b-0 md:border-r p-4 md:p-6 overflow-y-auto transition-colors duration-500 mt-25
+      ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"}`}
+    >
+      {/* Topics Filter */}
+      <section className="mb-6">
+        <h2 className="text-lg font-semibold mb-2">TOPICS</h2>
+        <div className="space-y-2">
+          {allTopics.map(topic => (
+            <label key={topic} className="flex items-center justify-between space-x-2 cursor-pointer text-sm">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedTopic === topic}
+                  onChange={() => handleTopicChange(topic)}
+                  className="rounded text-[#6334B9] focus:ring-[#6334B9] bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+                />
+                <span>{topic}</span>
+              </div>
+              <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                {getFilterProgress(topic, "topic")}
               </span>
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${currentPage === totalPages ? "bg-gray-300 text-gray-500 cursor-not-allowed" : darkMode ? "bg-purple-600 hover:bg-purple-700 text-white" : "bg-purple-500 hover:bg-purple-600 text-white"
-                  }`}
-              >
-                Next
-              </button>
-            </div>
-          </>
-        )}
-      </main>
-    </div>
-  );
+            </label>
+          ))}
+        </div>
+      </section>
+
+      {/* Difficulty Filter */}
+      <section className="mb-6">
+        <h2 className="text-lg font-semibold mb-2">DIFFICULTY</h2>
+        <div className="space-y-2">
+          {allDifficulties.map(difficulty => (
+            <label key={difficulty} className="flex items-center justify-between space-x-2 cursor-pointer text-sm">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedDifficulty === difficulty}
+                  onChange={() => handleDifficultyChange(difficulty)}
+                  className="rounded text-[#6334B9] focus:ring-[#6334B9] bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+                />
+                <span>{difficulty}</span>
+              </div>
+              <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                {getFilterProgress(difficulty, "difficulty")}
+              </span>
+            </label>
+          ))}
+        </div>
+      </section>
+
+      {/* Status Filter */}
+      <section>
+        <h2 className="text-lg font-semibold mb-2">STATUS</h2>
+        <div className="space-y-2">
+          {allStatuses.map(status => (
+            <label key={status} className="flex items-center justify-between space-x-2 cursor-pointer text-sm">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  checked={selectedStatus === status}
+                  onChange={() => handleStatusChange(status)}
+                  className="rounded text-[#6334B9] focus:ring-[#6334B9] bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600"
+                />
+                <span>{status}</span>
+              </div>
+              <span className={`text-xs ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+                {getFilterProgress(status, "status")}
+              </span>
+            </label>
+          ))}
+        </div>
+      </section>
+    </aside>
+
+    {/* Main Content */}
+    <main className="flex-1 p-4 md:p-6 mt-19">
+      <h1 className="text-2xl font-bold mb-6 text-center md:text-left">Problem Progress</h1>
+
+      {/* Progress Bar */}
+      <div className={`p-4 rounded-lg transition-colors duration-500 ${darkMode ? "bg-gray-800" : "bg-white"} mb-6`}>
+        <div className="flex flex-col sm:flex-row items-center justify-between text-sm mb-2">
+          <span>{progressSolvedCount} of {progressTotalCount} Problems Solved</span>
+          <span>{Math.round(progressPercentageForFiltered) || 0}%</span>
+        </div>
+        <div className="w-full h-2 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+          <div className="h-full bg-[#6334B9]" style={{ width: `${progressPercentageForFiltered}%` }}></div>
+        </div>
+      </div>
+
+      {/* Header + Search */}
+      <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-3">
+        <h2 className="text-xl font-bold">Problem List</h2>
+        <div className="relative w-full sm:w-64">
+          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${darkMode ? "text-[#6334B9]" : "text-[#6334B9]"}`} />
+          <input
+            type="text"
+            placeholder="Search problems..."
+            className={`w-full pl-10 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${darkMode
+             ? "bg-gray-700 border border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]"
+              : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]"
+              }`}
+            value={problemSearchTerm}
+            onChange={(e) => {
+              setProblemSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Problems Table */}
+      {filteredProblems.length === 0 ? (
+        <p className={`text-center py-10 ${darkMode ? "text-gray-400" : "text-gray-500"}`}>
+          No problems found for the selected filters.
+        </p>
+      ) : (
+        <>
+          <div className="overflow-x-auto shadow-md rounded-lg">
+            <table className={`w-full text-sm ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
+              <thead className={`${darkMode ? "bg-gray-700 text-gray-400" : "bg-gray-100 text-gray-700"}`}>
+                <tr>
+                  <th className="p-3 text-left">Status</th>
+                  <th className="p-3 text-left">Problem Title</th>
+                  <th className="p-3 text-left">Difficulty</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentProblems.map((q) => (
+                  <tr
+                    key={q.id}
+                    className={`border-t ${darkMode ? "border-gray-700 hover:bg-gray-800" : "border-gray-200 hover:bg-[#F2F0FF]"}`}
+                  >
+                    <td className="p-3">
+                      <input
+                        type="checkbox"
+                        checked={q.solved}
+                        onChange={() => handleCheckboxChange(q.id)}
+                        className="w-4 h-4 text-[#6334B9] bg-gray-200 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-[#6334B9]"
+                      />
+                    </td>
+                    <td className="p-3">
+                      <a
+                        href={createLeetCodeLink(q.title)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`font-medium ${darkMode ? "text-gray-200 hover:text-[#6334B9]" : "text-gray-900 hover:text-[#6334B9]"}`}
+                      >
+                        {q.title}
+                      </a>
+                    </td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyBgColorClass(q.difficulty)} ${getDifficultyColorClass(q.difficulty)}`}>
+                        {q.difficulty}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-3">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${currentPage === 1
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : darkMode
+                    ? "bg-[#6334B9] hover:bg-[#4B27A0] text-white"
+                    : "bg-[#6334B9] hover:bg-[#4B27A0] text-white"
+                }`}
+            >
+              Previous
+            </button>
+            <span className={`text-sm font-medium ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${currentPage === totalPages
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : darkMode
+                    ? "bg-[#6334B9] hover:bg-[#4B27A0] text-white"
+                    : "bg-[#6334B9] hover:bg-[#4B27A0] text-white"
+                }`}
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
+    </main>
+  </div>
+);
+
 }
 
 export default ALLINONEDSA;

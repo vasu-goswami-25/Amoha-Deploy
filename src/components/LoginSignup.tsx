@@ -68,7 +68,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onClose }) => {
           <img src={signupImage} alt="Illustration" className="max-h-48 mb-4" />
           <button
             onClick={toggleForm}
-            className="mt-4 px-6 py-2 border-2 border-white rounded-full hover:bg-white hover:text-purple-700 transition transform hover:scale-105 cursor-pointer"
+            className="mt-4 px-6 py-2 border-2 border-white rounded-full hover:bg-white hover:text-[#6334B9] transition transform hover:scale-105 cursor-pointer"
           >
             {isLogin ? "Create Account" : "Login"}
           </button>
@@ -90,7 +90,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onClose }) => {
                   onChange={handleChange}
                   placeholder="First Name"
                   autoComplete="off"
-                  className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#6334B9]"
                 />
                 <input
                   type="text"
@@ -99,7 +99,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onClose }) => {
                   onChange={handleChange}
                   placeholder="Last Name"
                   autoComplete="off"
-                  className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#6334B9]"
                 />
               </>
             )}
@@ -111,7 +111,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onClose }) => {
               onChange={handleChange}
               placeholder="Email"
               autoComplete="off"
-              className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#6334B9]"
             />
             <input
               type="password"
@@ -120,7 +120,7 @@ const LoginSignup: React.FC<LoginSignupProps> = ({ onClose }) => {
               onChange={handleChange}
               placeholder="Password"
               autoComplete="new-password"
-              className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#6334B9]"
             />
 
             <button

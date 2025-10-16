@@ -20,7 +20,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
             <h3 className="text-xl font-bold">Amoha Codes</h3>
             <p>Delhi Road</p>
             <p>India, 244001</p>
-            <p>Phone: +91 9760564433</p>
+            <p>Phone: +91 8923928433</p>
             <p>Email: amohacodes@gmail.com</p>
           </div>
 
@@ -39,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
                   <a
                     href={link.href}
                     className={`text-white transition-colors duration-200 hover:underline ${
-                      darkMode ? "hover:text-[#6334B9]" : "hover:text-gray-200"
+                      darkMode ? "hover:text-purple-300" : "hover:text-purple-300"
                     }`}
                   >
                     {link.name}
@@ -55,31 +55,31 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
             <ul className="space-y-2">
               {[
                 {
-                  name: "Practice Programing Language",
-                  href: "http://localhost:5174/practice/ProgramingLang",
+                  name: "Practice Programming Language",
+                  href: "http://localhost:5173/practice/ProgramingLang",
                 },
                 {
                   name: "Service-Based DSA Sheet",
-                  href: "http://localhost:5174/practice/service-based-dsa",
+                  href: "http://localhost:5173/practice/service-based-dsa",
                 },
                 {
-                  name: "Prodcut Based DSA Sheet",
-                  href: "http://localhost:5174/practice/dsa-problems",
+                  name: "Product Based DSA Sheet",
+                  href: "http://localhost:5173/practice/dsa-problems",
                 },
                 {
                   name: "Competitive Programming",
-                  href: "http://localhost:5174/practice/CP",
+                  href: "http://localhost:5173/practice/CP",
                 },
                 {
                   name: "Blind 75",
-                  href: "http://localhost:5174/practice/blind-75",
+                  href: "http://localhost:5173/practice/blind-75",
                 },
               ].map((service, idx) => (
                 <li key={idx}>
                   <a
                     href={service.href}
                     className={`transition-colors duration-200 hover:underline ${
-                      darkMode ? "hover:text-[#6334B9]" : "hover:text-gray-200"
+                      darkMode ? "hover:text-purple-300" : "hover:text-purple-300"
                     }`}
                   >
                     {service.name}
@@ -106,7 +106,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               href="https://www.linkedin.com/in/vasugoswami25/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-white hover:underline hover:text-[#6334B9] transition-colors"
+              className="font-semibold text-white hover:underline hover:text-purple-300 transition-colors"
             >
               Vasu Goswami
             </a>
@@ -115,7 +115,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               href="https://www.linkedin.com/in/sakshi-sharma-87b247297/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-white hover:underline hover:text-[#6334B9] transition-colors"
+              className="font-semibold text-white hover:underline hover:text-purple-300 transition-colors"
             >
               Sakshi Sharma
             </a>
@@ -133,7 +133,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               <FaLinkedin
                 size={22}
                 className={`transition-colors duration-200 ${
-                  darkMode ? "hover:text-[#6334B9]" : "hover:text-gray-200"
+                  darkMode ? "hover:text-purple-300" : "hover:text-gray-200"
                 }`}
               />
             </a>
@@ -146,7 +146,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               <FaFacebook
                 size={22}
                 className={`transition-colors duration-200 ${
-                  darkMode ? "hover:text-[#6334B9]" : "hover:text-gray-200"
+                  darkMode ? "hover:text-purple-300" : "hover:text-gray-200"
                 }`}
               />
             </a>
@@ -159,7 +159,7 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               <FaInstagram
                 size={22}
                 className={`transition-colors duration-200 ${
-                  darkMode ? "hover:text-[#6334B9]" : "hover:text-gray-200"
+                  darkMode ? "hover:text-purple-300" : "hover:text-gray-200"
                 }`}
               />
             </a>

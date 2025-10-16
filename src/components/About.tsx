@@ -30,9 +30,9 @@ const About: FC<AboutProps> = ({ darkMode }) => {
           At Amoha, we believe in the transformative power of education to
           inspire brighter futures. Guided by our motto,{" "}
           <span className="font-semibold">
-            "Empowering Dreams Through Education,"
+            "Empowering Dreams Through Education".
           </span>{" "}
-          we are dedicated to fostering a learning-rich and inspiring ecosystem
+          We are dedicated to fostering a learning-rich and inspiring ecosystem
           that enables learners to unlock their full potential. At Amoha, our
           mission is shaping the future of technology-driven education by
           providing learners with opportunities to gain meaningful skills and

@@ -57,7 +57,7 @@ const practiceSections: PracticeSection[] = [
     description:
       "Tackle a handpicked set of problems aimed at interviews with product-based companies. Each problem is designed to sharpen your ability to think critically and solve complex coding challenges.",
     icon: ListChecks,
-    url: "/practice/dsa-problems",
+    url: "/practice/praactice",
   },
   // 7.
   {
@@ -109,8 +109,8 @@ const MainPracticePage: React.FC<MainPracticePageProps> = ({ darkMode = true }) 
           companies, we offer a comprehensive range of resources to guide you through each stage
           of your learning journey.
           </p>
-          <p>
-          Our platform provides a systematic approach to help you hone your technical skills,
+          <p className="text-base md:text-lg mb-12 leading-relaxed">
+          Our platform provides a systematic approach to help you sharpen your technical skills,
           build problem-solving efficiency, and master key data structures and algorithms that
           are vital for cracking coding interviews and competitive programming challenges.
          </p>
@@ -149,6 +149,7 @@ const MainPracticePage: React.FC<MainPracticePageProps> = ({ darkMode = true }) 
                   >
                     {section.description}
                   </p>
+                  
                 </div>
               </Link>
             );
@@ -176,7 +177,7 @@ const MainPracticePage: React.FC<MainPracticePageProps> = ({ darkMode = true }) 
           </ul>
 
           <p className="mt-4">
-            <strong>Start Practicing Now</strong> and take your coding skills to the next level. With consistent practice and targeted learning,
+            Start Practicing Now and take your coding skills to the next level. With consistent practice and targeted learning,
             you'll be well-prepared for your next coding interview.
           </p>
         </div>

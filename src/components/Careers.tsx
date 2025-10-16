@@ -1,6 +1,6 @@
 
-// ====================================================================================================
-import { type FC } from "react";
+// // ====================================================================================================
+ import {useState,  type FC, type FormEvent } from "react";
 
 // Types for company data
 interface Company {
@@ -29,7 +29,7 @@ const serviceBasedCompanies: Company[] = [
   { company: "Atos",  image: "Atos.png",link:"https://atos.net/en/careers" },
 ];
 
-// --- Product-Based Companies Data ---
+// // --- Product-Based Companies Data ---
 const productBasedCompanies: Company[] = [
   { company: "Google",  image: "Gooogle.png",link:"https://careers.google.com/" },
   { company: "Apple",  image: "Apple.png",link:"https://www.apple.com/careers/" },
@@ -45,41 +45,45 @@ const productBasedCompanies: Company[] = [
   { company: "Uber",  image: "Uber.png",link:"https://www.uber.com/global/en/careers/" },
 ];
 
-// --- Reusable Company Card Component ---
-interface CompanyCardProps  {
+// // --- Reusable Company Card Component ---
+interface CompanyCardProps {
   company: Company;
   darkMode: boolean;
 }
 
 const CompanyCard: FC<CompanyCardProps> = ({ company, darkMode }) => (
   <div
-    className={`w-full sm:w-80 rounded-xl shadow-md p-6 border transform transition duration-200 hover:scale-105 hover:shadow-3xl flex flex-col items-center ${darkMode
-      ? "bg-gray-800 border-[#6334B9] text-white hover:shadow-[0_4px_6px_#6334B980] "
-      : "bg-white border-[#6334B9] text-gray-900"
-      }`}
+    className={`w-full sm:w-80 rounded-xl shadow-md p-6 border transform transition duration-200 hover:scale-105 hover:shadow-3xl flex flex-col items-center ${
+      darkMode
+        ? "bg-gray-800 border-[#6334B9] text-white hover:shadow-[0_4px_6px_#6334B980]"
+        : "bg-white border-[#6334B9] text-gray-900"
+    }`}
   >
     <img
       src={company.image}
       alt={company.company}
-      className={`w-full h-48 object-contain mb-4 rounded-xl border ${darkMode ? "border-gray-500" : "border-[#6334B9]"
-        }`}
+      className={`w-full h-48 object-contain mb-4 rounded-xl border ${
+        darkMode
+          ? "border-gray-600 hover:scale-105 hover:shadow-3xl hover:shadow-[0_4px_6px_#6334B980]"
+          : "border-[#6334B9] hover:scale-105 hover:shadow-3xl hover:shadow-[0_4px_6px_#6334B980]"
+      }`}
     />
-    {/* <div className={`${darkMode ? "text-white" : "text-purple-700"} text-sm font-medium`}>
-      {company.company}
-    </div> */}
-    <h3 className={`${darkMode ? "text-white" : "text-gray-900"} text-lg font-semibold text-center`}>
+    <h3
+      className={`${
+        darkMode ? "text-white" : "text-gray-900"
+      } text-lg font-semibold text-center`}
+    >
       {company.company}
     </h3>
-    {/* <div className={`${darkMode ? "text-purple-300" : "text-purple-700"} text-sm mb-4`}>
-      {company.duration}
-    </div> */}
-     {/* 🔹 Button opens company link in new tab */}
+
     <a
       href={company.link}
       target="_blank"
       rel="noopener noreferrer"
       className={`w-full text-center font-bold py-2 px-4 rounded-lg transition duration-300 cursor-pointer mt-10 ${
-        darkMode ? "bg-[#6334B9] text-white hover:bg-[#6334B9] " : "bg-[#6334B9]  text-white hover:bg-[#6334B9] "
+        darkMode
+          ? "bg-[#6334B9] text-white hover:bg-[#6334B9]"
+          : "bg-[#6334B9] text-white hover:bg-[#6334B9]"
       }`}
     >
       Apply Now
@@ -87,166 +91,266 @@ const CompanyCard: FC<CompanyCardProps> = ({ company, darkMode }) => (
   </div>
 );
 
-// Main App Component
 const App: FC<AppProps> = ({ darkMode }) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [stream, setStream] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
+  const [errors, setErrors] = useState({
+    fullName: "",
+    email: "",
+    stream: "",
+    resume: "",
+  });
+
+   const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    const newErrors = {
+      fullName: fullName ? "" : "Full Name is required",
+      email: email ? "" : "Email is required",
+      stream: stream && stream !== "Select Your Stream" ? "" : "Stream is required",
+      resume: resume ? "" : "Resume is required",
+    };
+
+    setErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every((err) => err === "");
+    if (isValid) {
+      alert("Form submitted successfully ✅");
+    }
+  };
   return (
     <div
-      className={`font-sans min-h-screen transition-colors duration-500 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-        }`}
+      className={`font-sans min-h-screen transition-colors duration-500 ${
+        darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+      }`}
     >
-      <main className="container mx-auto p-4 md:p-8">
-        {/* Apply for an Internship section */}
-        <section className="my-8 md:my-16 ml-40 mr-40">
-          <h2
-            className={`${darkMode ? "text-white" : "text-gray-900"} text-3xl font-bold mb-6`}
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Apply for an Internship */}
+         <section className="my-8 md:my-16 mx-auto max-w-6xl">
+      <h2
+        className={`${
+          darkMode ? "text-white" : "text-gray-900"
+        } text-3xl font-bold mb-6 text-center md:text-left`}
+      >
+        Apply to Amoha Codes
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+        className={`grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 p-6 md:p-12 rounded-2xl shadow-lg transition-colors duration-500 ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        {/* Full Name */}
+        <div>
+          <label
+            htmlFor="fullName"
+            className={`block text-sm font-medium mb-1 ${
+              darkMode ? "text-white" : "text-gray-700"
+            }`}
           >
-            Apply to Amoha Codes
-          </h2>
-          <form
-            className={`grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-12 rounded-2xl shadow-lg transition-colors duration-500 ${darkMode ? "bg-gray-800" : "bg-white"
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Enter Your Full Name"
+            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+              darkMode
+                ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
+                : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
+            }`}
+          />
+          {errors.fullName && (
+            <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+          )}
+        </div>
+
+        {/* Email */}
+        <div>
+          <label
+            htmlFor="email"
+            className={`block text-sm font-medium mb-1 ${
+              darkMode ? "text-white" : "text-gray-700"
+            }`}
+          >
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter Your Email Address"
+            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+              darkMode
+                ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
+                : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
+            }`}
+          />
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+          )}
+        </div>
+
+        {/* Stream */}
+        <div>
+          <label
+            htmlFor="stream"
+            className={`block text-sm font-medium mb-1 ${
+              darkMode ? "text-white" : "text-gray-700"
+            }`}
+          >
+            Stream
+          </label>
+          <select
+            id="stream"
+            value={stream}
+            onChange={(e) => setStream(e.target.value)}
+            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+              darkMode
+                ? "bg-gray-700 border-[#6334B9] text-gray-400 focus:ring-[#6334B9]"
+                : "bg-purple-100 border-[#6334B9] text-gray-500 focus:ring-[#6334B9]"
+            }`}
+          >
+            <option>Select Your Stream</option>
+            <option>Engineering</option>
+            <option>Marketing</option>
+            <option>Design</option>
+            <option>Finance</option>
+            <option>Operations</option>
+            <option>Sales</option>
+          </select>
+          {errors.stream && (
+            <p className="text-red-500 text-sm mt-1">{errors.stream}</p>
+          )}
+        </div>
+
+        {/* Resume */}
+        <div>
+          <label
+            htmlFor="resume"
+            className={`block text-sm font-medium mb-1 ${
+              darkMode ? "text-white" : "text-gray-700"
+            }`}
+          >
+            Resume
+          </label>
+          <div className="relative">
+            <input
+              type="file"
+              id="resume"
+              onChange={(e) => setResume(e.target.files?.[0] || null)}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+            <div
+              className={`flex items-center justify-between w-full px-4 py-3 rounded-lg border focus-within:ring-2 transition-colors duration-500 ${
+                darkMode
+                  ? "bg-gray-700 border-[#6334B9] text-white focus-within:ring-[#6334B9]"
+                  : "bg-purple-100 border-[#6334B9] text-gray-900 focus-within:ring-[#6334B9]"
               }`}
+            >
+              <span
+                className={`${
+                  resume
+                    ? darkMode
+                      ? "text-white"
+                      : "text-gray-900"
+                    : darkMode
+                    ? "text-gray-400"
+                    : "text-gray-500"
+                }`}
+              >
+                {resume ? resume.name : "Upload Your Resume"}
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`h-6 w-6 ${
+                  darkMode ? "text-gray-300" : "text-[#6334B9]"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                />
+              </svg>
+            </div>
+          </div>
+          {errors.resume && (
+            <p className="text-red-500 text-sm mt-1">{errors.resume}</p>
+          )}
+        </div>
+
+        {/* Submit */}
+        <div className="md:col-span-2 text-center">
+          <button
+            type="submit"
+            className={`px-8 py-3 font-bold rounded-lg shadow-lg cursor-pointer transition duration-300 ${
+              darkMode
+                ? "bg-[#6334B9] text-white hover:bg-[#6334B9]"
+                : "bg-[#6334B9] text-white hover:bg-[#6334B9]"
+            }`}
           >
-            <div>
-              <label
-                htmlFor="fullName"
-                className={`block text-sm font-medium mb-1 ${darkMode ? "text-white" : "text-gray-700"
-                  }`}
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                placeholder="Enter Your Full Name"
-                className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${darkMode
-                 ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
-                  : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
-                  }`}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="email"
-                className={`block text-sm font-medium mb-1 ${darkMode ? "text-white" : "text-gray-700"
-                  }`}
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter Your Email Address"
-                className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${darkMode
-                  ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
-                  : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
-                  }`}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="stream"
-                className={`block text-sm font-medium mb-1 ${darkMode ? "text-white" : "text-gray-700"
-                  }`}
-              >
-                Stream
-              </label>
-              <select
-                id="stream"
-                className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${darkMode
-                  ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
-                  : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
-                  }`}
-              >
-                <option>Select Your Stream</option>
-                <option>Engineering</option>
-                <option>Marketing</option>
-                <option>Design</option>
-                <option>Finance</option>
-                <option>Operations</option>
-                <option>Sales</option>
-              </select>
-            </div>
-            <div>
-              <label
-                htmlFor="resume"
-                className={`block text-sm font-medium mb-1 ${darkMode ? "text-white" : "text-gray-700"
-                  }`}
-              >
-                Resume
-              </label>
-              <div className="relative">
-                <input type="file" id="resume" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                <div
-                  className={`flex items-center justify-between w-full px-4 py-3 rounded-lg border focus-within:ring-2 transition-colors duration-500 ${darkMode
-                    ? "bg-gray-700 border-[#6334B9] text-white focus-within:ring-[#6334B9]"
-                    : "bg-purple-100 border-[#6334B9] text-gray-900 focus-within:ring-[#6334B9]"
-                    }`}
-                >
-                  <span className={`${darkMode ? "text-white" : "text-[#6334B9]"}`}>Upload Your Resume</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`h-6 w-6 ${darkMode ? "text-white" : "text-[#6334B9]"}`}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div className="md:col-span-2 text-center">
-              <button
-                type="submit"
-                className={`px-8 py-3 font-bold rounded-lg shadow-lg cursor-pointer transition duration-300 ${darkMode
-                  ? "bg-[#6334B9] text-white hover:bg-[#6334B9]"
-                  : "bg-[#6334B9] text-white hover:bg-[#6334B9]"
-                  }`}
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </section>
+            Submit
+          </button>
+        </div>
+      </form>
+    </section>
 
-
-        {/* SERVICE-BASED COMPANIES*/}
-        <section className="my-8 md:my-16">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 ml-40">
+        {/* SERVICE-BASED COMPANIES */}
+        <section className="my-8 md:my-16 mx-auto max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 px-4 md:px-0">
             <h2
-              className={`${darkMode ? "text-white" : "text-gray-900"} text-3xl font-bold mb-4 md:mb-0`}
+              className={`${
+                darkMode ? "text-white" : "text-gray-900"
+              } text-3xl font-bold mb-4 md:mb-0 text-center md:text-left`}
             >
               Service-Based Companies
             </h2>
           </div>
 
-          {/* Grid of internship cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center ml-30 mr-30">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8 justify-items-center px-4 md:px-0">
             {serviceBasedCompanies.map((internship, index) => (
-              <CompanyCard  key={index} company={internship} darkMode={darkMode} />
+              <CompanyCard
+                key={index}
+                company={internship}
+                darkMode={darkMode}
+              />
             ))}
           </div>
         </section>
 
-        {/* -------------------------------------------------------------------------------- */}
-      
-          {/* PRODUCT-BASED COMPANIES */}
-          <section className="my-8 md:my-16">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 ml-40">
-              <h2
-                className={`${darkMode ? "text-white" : "text-gray-900"} text-3xl font-bold mb-4 md:mb-0`}
-              >
-                Product-Based Companies
-              </h2>
-            </div>
+        {/* PRODUCT-BASED COMPANIES */}
+        <section className="my-8 md:my-16 mx-auto max-w-6xl">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 px-4 md:px-0">
+            <h2
+              className={`${
+                darkMode ? "text-white" : "text-gray-900"
+              } text-3xl font-bold mb-4 md:mb-0 text-center md:text-left`}
+            >
+              Product-Based Companies
+            </h2>
+          </div>
 
-            {/* Grid of internship cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center ml-30 mr-30">
-              {productBasedCompanies.map((internship, index) => (
-                <CompanyCard  key={index} company={internship} darkMode={darkMode} />
-              ))}
-            </div>
-          </section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8 justify-items-center px-4 md:px-0">
+            {productBasedCompanies.map((internship, index) => (
+              <CompanyCard
+                key={index}
+                company={internship}
+                darkMode={darkMode}
+              />
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
@@ -254,3 +358,273 @@ const App: FC<AppProps> = ({ darkMode }) => {
 
 export default App;
 
+
+  // Form States
+//   const [fullName, setFullName] = useState("");
+//   const [email, setEmail] = useState("");
+//   const [stream, setStream] = useState("");
+//   const [resume, setResume] = useState<File | null>(null);
+
+//   // Error States
+//   const [errors, setErrors] = useState({
+//     fullName: "",
+//     email: "",
+//     stream: "",
+//     resume: "",
+//   });
+
+//   const handleSubmit = (e: React.FormEvent) => {
+//     e.preventDefault();
+
+//     // Validation checks
+//     const newErrors = {
+//       fullName: fullName.trim() ? "" : "Full Name is required",
+//       email: email.trim() ? "" : "Email Address is required",
+//       stream:
+//         stream && stream !== "Select Your Stream"
+//           ? ""
+//           : "Please select your stream",
+//       resume: resume ? "" : "Please upload your resume",
+//     };
+
+//     setErrors(newErrors);
+
+//     const isValid = Object.values(newErrors).every((error) => error === "");
+//     if (isValid) {
+//       alert("Form submitted successfully ✅");
+//     }
+//   };
+
+//   return (
+//     <section className="my-8 md:my-16 mx-auto max-w-6xl">
+//       <h2
+//         className={`${
+//           darkMode ? "text-white" : "text-gray-900"
+//         } text-3xl font-bold mb-6 text-center md:text-left`}
+//       >
+//         Apply to Amoha Codes
+//       </h2>
+
+//       <form
+//         onSubmit={handleSubmit}
+//         className={`grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 p-6 md:p-12 rounded-2xl shadow-lg transition-colors duration-500 ${
+//           darkMode ? "bg-gray-800" : "bg-white"
+//         }`}
+//       >
+//         {/* Full Name */}
+//         <div>
+//           <label
+//             htmlFor="fullName"
+//             className={`block text-sm font-medium mb-1 ${
+//               darkMode ? "text-white" : "text-gray-700"
+//             }`}
+//           >
+//             Full Name
+//           </label>
+//           <input
+//             type="text"
+//             id="fullName"
+//             value={fullName}
+//             onChange={(e) => setFullName(e.target.value)}
+//             placeholder="Enter Your Full Name"
+//             className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+//               errors.fullName
+//                 ? "border-red-500 focus:ring-red-400"
+//                 : darkMode
+//                 ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
+//                 : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
+//             }`}
+//           />
+//           {errors.fullName && (
+//             <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+//           )}
+//         </div>
+
+//         {/* Email */}
+//         <div>
+//           <label
+//             htmlFor="email"
+//             className={`block text-sm font-medium mb-1 ${
+//               darkMode ? "text-white" : "text-gray-700"
+//             }`}
+//           >
+//             Email Address
+//           </label>
+//           <input
+//             type="email"
+//             id="email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//             placeholder="Enter Your Email Address"
+//             className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+//               errors.email
+//                 ? "border-red-500 focus:ring-red-400"
+//                 : darkMode
+//                 ? "bg-gray-700 border-[#6334B9] text-white focus:ring-[#6334B9]"
+//                 : "bg-purple-100 border-[#6334B9] text-gray-900 focus:ring-[#6334B9]"
+//             }`}
+//           />
+//           {errors.email && (
+//             <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+//           )}
+//         </div>
+
+//         {/* Stream */}
+//         <div>
+//           <label
+//             htmlFor="stream"
+//             className={`block text-sm font-medium mb-1 ${
+//               darkMode ? "text-white" : "text-gray-700"
+//             }`}
+//           >
+//             Stream
+//           </label>
+//           <select
+//             id="stream"
+//             value={stream}
+//             onChange={(e) => setStream(e.target.value)}
+//             className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors duration-500 ${
+//               errors.stream
+//                 ? "border-red-500 focus:ring-red-400"
+//                 : darkMode
+//                 ? "bg-gray-700 border-[#6334B9] text-gray-400 focus:ring-[#6334B9]"
+//                 : "bg-purple-100 border-[#6334B9] text-gray-500 focus:ring-[#6334B9]"
+//             }`}
+//           >
+//             <option>Select Your Stream</option>
+//             <option>Engineering</option>
+//             <option>Marketing</option>
+//             <option>Design</option>
+//             <option>Finance</option>
+//             <option>Operations</option>
+//             <option>Sales</option>
+//           </select>
+//           {errors.stream && (
+//             <p className="text-red-500 text-sm mt-1">{errors.stream}</p>
+//           )}
+//         </div>
+
+//         {/* Resume */}
+//         <div>
+//           <label
+//             htmlFor="resume"
+//             className={`block text-sm font-medium mb-1 ${
+//               darkMode ? "text-white" : "text-gray-700"
+//             }`}
+//           >
+//             Resume
+//           </label>
+//           <div className="relative">
+//             <input
+//               type="file"
+//               id="resume"
+//               onChange={(e) =>
+//                 setResume(e.target.files ? e.target.files[0] : null)
+//               }
+//               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+//             />
+//             <div
+//               className={`flex items-center justify-between w-full px-4 py-3 rounded-lg border focus-within:ring-2 transition-colors duration-500 ${
+//                 errors.resume
+//                   ? "border-red-500 focus-within:ring-red-400"
+//                   : darkMode
+//                   ? "bg-gray-700 border-[#6334B9] text-white focus-within:ring-[#6334B9]"
+//                   : "bg-purple-100 border-[#6334B9] text-gray-900 focus-within:ring-[#6334B9]"
+//               }`}
+//             >
+//               <span
+//                 className={`${darkMode ? "text-gray-400" : "text-gray-500"}`}
+//               >
+//                 {resume ? resume.name : "Upload Your Resume"}
+//               </span>
+//               <svg
+//                 xmlns="http://www.w3.org/2000/svg"
+//                 className={`h-6 w-6 ${
+//                   darkMode ? "text-gray-300" : "text-[#6334B9]"
+//                 }`}
+//                 fill="none"
+//                 viewBox="0 0 24 24"
+//                 stroke="currentColor"
+//               >
+//                 <path
+//                   strokeLinecap="round"
+//                   strokeLinejoin="round"
+//                   strokeWidth={2}
+//                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+//                 />
+//               </svg>
+//             </div>
+//           </div>
+//           {errors.resume && (
+//             <p className="text-red-500 text-sm mt-1">{errors.resume}</p>
+//           )}
+//         </div>
+
+//         {/* Submit Button */}
+//         <div className="md:col-span-2 text-center">
+//           <button
+//             type="submit"
+//             className={`px-8 py-3 font-bold rounded-lg shadow-lg cursor-pointer transition duration-300 ${
+//               darkMode
+//                 ? "bg-[#6334B9] text-white hover:bg-[#7b4be1]"
+//                 : "bg-[#6334B9] text-white hover:bg-[#7b4be1]"
+//             }`}
+//           >
+//             Submit
+//           </button>
+//         </div>
+//       </form>
+//     </section>
+  
+
+//  {/* SERVICE-BASED COMPANIES */}
+//         <section className="my-8 md:my-16 mx-auto max-w-6xl">
+//           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 px-4 md:px-0">
+//              <h2
+//               className={`${
+//                 darkMode ? "text-white" : "text-gray-900"
+//               } text-3xl font-bold mb-4 md:mb-0 text-center md:text-left`}
+//             >
+//               Service-Based Companies
+//             </h2>
+//           </div>
+
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8 justify-items-center px-4 md:px-0">
+//             {serviceBasedCompanies.map((internship, index) => (
+//               <CompanyCard
+//                 key={index}
+//                 company={internship}
+//                 darkMode={darkMode}
+//               />
+//             ))}
+//           </div>
+//         </section>
+
+//         {/* PRODUCT-BASED COMPANIES */}
+//         <section className="my-8 md:my-16 mx-auto max-w-6xl">
+//           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 px-4 md:px-0">
+//             <h2
+//               className={`${
+//                 darkMode ? "text-white" : "text-gray-900"
+//               } text-3xl font-bold mb-4 md:mb-0 text-center md:text-left`}
+//             >
+//               Product-Based Companies
+//             </h2>
+//           </div>
+
+//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-20 gap-y-8 justify-items-center px-4 md:px-0">
+//             {productBasedCompanies.map((internship, index) => (
+//               <CompanyCard
+//                 key={index}
+//                 company={internship}
+//                 darkMode={darkMode}
+//               />
+//             ))}
+//           </div>
+//         </section>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export default App;

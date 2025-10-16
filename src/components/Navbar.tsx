@@ -43,7 +43,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                   to={link.path}
                   className={`cursor-pointer transition-colors duration-300 
                     ${darkMode 
-                      ? "text-white hover:text-[#6334B9]"  // Dark mode: white → purple
+                      ? "text-white hover:text-purple-300"  // Dark mode: white → purple
                       : "text-gray-900 hover:text-[#6334B9]" // Light mode: dark gray → purple
                     }`}
                 >

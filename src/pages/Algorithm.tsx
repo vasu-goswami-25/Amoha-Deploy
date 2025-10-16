@@ -1506,15 +1506,15 @@ const getPurpleButtonClass = (): string =>
       </button>
 
       {/* Sidebar - Modified to be positioned correctly and responsive */}
-      <div
+          <div
         className={`
-    fixed top-0 left-0 w-80 border-r p-0 z-20 lg:z-10 
-    transition-transform duration-300 ease-in-out lg:translate-x-0 
-    lg:w-80 lg:relative lg:min-h-full
-    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-    ${getSidebarColorClass()}
-  `}
-        style={{ top: '20px', height: 'calc(100vh - 40px)' }}
+          fixed left-0 top-20 h-[calc(100vh-80px)] w-80
+          border-r p-0 z-30
+          transition-transform duration-300 ease-in-out
+          lg:translate-x-0 lg:relative lg:top-0 lg:h-auto
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          ${getSidebarColorClass()}
+        `}
       >
 
         {/* Inner container now holds all padding to bring content up */}

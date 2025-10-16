@@ -68,7 +68,7 @@ const App: FC<AppProps> = ({ darkMode }) => {
               }`}
             >
               <Phone className={`w-5 h-5 ${darkMode ? "text-purple-500" : "text-[#6334b9]"}`} />
-              <span>+91 9760564433</span>
+              <span>+91 8923928433</span>
             </div>
 
             <div
@@ -79,7 +79,7 @@ const App: FC<AppProps> = ({ darkMode }) => {
               }`}
             >
               <MapPin className={`w-5 h-5 ${darkMode ? "text-purple-500" : "text-[#6334b9]"}`} />
-              <span>Delhi Road, Moradabad, 244001 India</span>
+              <span>Delhi Road, India, 244001</span>
             </div>
           </div>
 

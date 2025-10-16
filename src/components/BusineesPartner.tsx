@@ -10,14 +10,14 @@ interface BusinessPartnersProps {
  import  Two from "../assets/Two.png";
  import  Three from "../assets/Three.png";
  import  Four from "../assets/Four.png";
- import  Five from "../assets/Five.png";
+//  import  Five from "../assets/Five.png";
  import  Six from "../assets/Six.png";
  
  
 
 
 const BusinessPartners: FC<BusinessPartnersProps> = ({ darkMode }) => {
-  const logos = [One,Two,Three,Four,Five,Six];
+  const logos = [One,Two,Three,Four,Six];
 
   return (
     <section

@@ -16,7 +16,7 @@ const LearnersStats: FC<LearnersStatsProps> = ({ darkMode }) => {
       >
         <h3
           className={`text-2xl font-bold ${
-            darkMode ? "text-[#6334B9]" : "text-[#6334B9]"
+            darkMode ? "text-purple-400" : "text-[#6334B9]"
           }`}
         >
           10,000+
@@ -31,7 +31,7 @@ const LearnersStats: FC<LearnersStatsProps> = ({ darkMode }) => {
       >
         <h3
           className={`text-2xl font-bold ${
-            darkMode ? "text-[#6334B9]" : "text-[#6334B9]"
+            darkMode ? "text-purple-400" : "text-[#6334B9]"
           }`}
         >
           1,000+

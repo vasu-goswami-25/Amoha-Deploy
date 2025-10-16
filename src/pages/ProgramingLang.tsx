@@ -67,7 +67,7 @@ const ChainLevelCard = React.forwardRef<
       ref={ref}
       className={`relative p-6 rounded-xl shadow-lg transition-all duration-300 w-full max-w-xs cursor-pointer mx-auto
         ${isSelected
-          ? "bg-[#6334B9] text-white shadow-xl shadow-[#6334B9] transform scale-[1.05]"
+          ? "bg-[#6334B9] text-white shadow-xl  transform scale-[1.05]"
           : darkMode
             ? "bg-gray-800 text-gray-100 hover:shadow-2xl hover:border-[#6334B9]"
             : "bg-white text-gray-900 hover:shadow-2xl hover:border-[#6334B9]"

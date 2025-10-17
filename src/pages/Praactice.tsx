@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Search, ChevronDown, ChevronRight } from "lucide-react";
+import { Search, ChevronDown, ChevronRight, Menu, X } from "lucide-react";
 
 // --- Types ---
 export type Difficulty = "Easy" | "Medium" | "Hard";
@@ -15,7 +15,8 @@ export interface Question {
 
 // --- CONFIG ---
 const TARGET_QUESTION_COUNT = 455;
-const PRIMARY_COLOR = "#6334B9"; // Custom color
+
+
 
 // --- Data Generation Helpers (Ensures exactly 455 problems and unique IDs) ---
 let currentId = 1;
@@ -335,6 +336,7 @@ const baseQuestions: Question[] = [
     createQuestion("Number of island II", "Graphs", "Hard", "https://leetcode.com/problems/number-of-islands-ii/"),
     createQuestion("Making a Large Island", "Graphs", "Hard", "https://leetcode.com/problems/making-a-large-island/"),
     createQuestion("Swim in rising water", "Graphs", "Hard", "https://leetcode.com/problems/swim-in-rising-water/"),
+
     // --- DP ---
     createQuestion("Fibonacci Number", "DP", "Easy", "https://leetcode.com/problems/fibonacci-number/"),
     createQuestion("Subset sum equal to target", "DP", "Medium", "https://leetcode.com/problems/partition-equal-subset-sum/"),
@@ -452,17 +454,58 @@ const allCategories = [
 interface PracticeProps {
     darkMode: boolean;
 }
-
 const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
     const [questionsList, setQuestionsList] = useState<Question[]>(initialQuestions);
     const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
     const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
-    // Removed unused categorySearchTerm state to fix compile error
+    const [categorySearchTerm] = useState<string>(""); // Not used in filtering but kept for future expansion
     const [problemSearchTerm, setProblemSearchTerm] = useState<string>("");
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false); // Added for mobile sidebar
 
-    // --- Memoized Values ---
+    // --- Utility Classes from Algorithm Component ---
+    const getBackgroundColorClass = (): string =>
+        darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900";
 
-    const filteredCategories = useMemo(() => allCategories, []);
+    const getSidebarColorClass = (): string =>
+        darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200";
+
+    const getProgressSectionColorClass = (): string =>
+        darkMode ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-900";
+
+    const getProblemSearchColorClass = (): string =>
+        darkMode
+            ? "bg-gray-700 border border-[#6334B9] text-white focus:ring-2 focus:ring-[#6334B9]"
+            : "bg-purple-50 border border-[#6334B9] text-black focus:ring-2 focus:ring-[#6334B9]";
+
+    const getTableColorClass = (): string =>
+        darkMode ? "border-gray-700" : "border-gray-200";
+
+    const getTableHeaderColorClass = (): string =>
+        darkMode ? "bg-gray-700" : "bg-gray-100";
+
+    const getTableRowColorClass = (isSolved: boolean): string => {
+        const baseClasses = darkMode ? "border-gray-700" : "border-gray-200";
+        const hoverClass = darkMode ? "hover:bg-gray-800" : "hover:bg-[#F2F0FF]";
+        const solvedBg = isSolved ? (darkMode ? "bg-gray-800/50" : "bg-[#F7FEF7]") : ""; // Adjusted solved bg color
+        return `${baseClasses} ${hoverClass} ${solvedBg}`;
+    }
+
+  const getProblemTitleColorClass = (isSolved: boolean): string =>
+  isSolved
+    ? (darkMode ? "text-gray-200 hover:text-[#6334B9]" : "text-gray-900 hover:text-[#6334B9]") 
+    : (darkMode ? "text-gray-200 hover:text-[#6334B9]" : "text-gray-900 hover:text-[#6334B9]"); // agar solved nahi hai
+    
+    const getPurpleButtonClass = (): string =>
+        darkMode
+            ? "bg-[#6334B9] hover:bg-[#4B27A0] text-white" // hover darker shade
+            : "bg-[#6334B9] hover:bg-[#4B27A0] text-white";
+    // --- End Utility Classes ---
+
+
+    // --- Memoized Values (Unchanged) ---
+    const filteredCategories = useMemo(() => allCategories.filter((cat) =>
+        cat.toLowerCase().includes(categorySearchTerm.toLowerCase())
+    ), [categorySearchTerm]);
 
     const filteredQuestions = useMemo(() => {
         return questionsList.filter((q) => {
@@ -509,7 +552,7 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
         return stats;
     }, [questionsList]);
 
-    // --- Handlers & Helpers ---
+    // --- Handlers & Helpers (Unchanged logic, updated classes) ---
 
     const handleCheckboxChange = (id: number) => {
         setQuestionsList((prevList) =>
@@ -532,54 +575,63 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
         }
     };
 
-    // Custom styles using CSS variables for dynamic color handling
-    // Removed unused customStyles variable to fix compile error
-
     const renderCategoryItem = (category: string) => {
         const isExpanded = category === expandedCategory;
         const { solved, total } = categoryStats[category] || { solved: 0, total: 0 };
-
         const isCategorySelected = expandedCategory === category;
+        const allSolved = solved === total && total > 0;
+
+        // Matches Algorithm component's category item style
+        const categoryItemClass = `flex items-center justify-between space-x-2 cursor-pointer p-2 rounded-md ${
+            isCategorySelected 
+                ? (darkMode ? "bg-gray-700" : "bg-gray-100") 
+                : (darkMode ? "hover:bg-gray-700" : "hover:bg-gray-100")
+        }`;
+        
+        const categoryTextColor = darkMode ? "text-white" : "text-gray-900";
+        const progressTextColor = allSolved 
+            ? "text-green-500" 
+            : (darkMode ? "text-gray-400" : "text-gray-600");
+
 
         return (
             <div key={category} className="group">
-                {/* Main Category Button (Updated to match the screenshot style closely) */}
-                <button
+                {/* Main Category Button */}
+                <div
                     onClick={() => {
                         setExpandedCategory(isExpanded ? null : category);
                         setSelectedDifficulty(null);
                     }}
-                    className={`flex justify-between items-center w-full p-2 text-sm font-medium transition-all duration-200 ${
-                        // Dark Mode Styles based on screenshot (Dark theme with hover/selected)
-                        darkMode ? `text-[var(--dark-text-color)] hover:bg-gray-700` : `text-gray-700 hover:bg-gray-200`
-                        }`}
-                    style={{
-                        color: isCategorySelected ? PRIMARY_COLOR : undefined, // Primary color text when selected
-                        fontWeight: isCategorySelected ? 'bold' : '500',
-                        backgroundColor: isCategorySelected ? (darkMode ? '#2C323D' : '#E6E8EF') : 'transparent', // Light background on selection
-                    }}
+                    className={categoryItemClass}
                 >
-                    <span className="flex items-center">
-                        {/* Chevron Icon - Always pointing Right when collapsed (like the image) */}
-                        {isExpanded ? <ChevronDown className="w-4 h-4 mr-2" /> : <ChevronRight className="w-4 h-4 mr-2" />}
-                        {category}
-                    </span>
-                    <span
-                        className={`text-xs font-mono ml-2 ${solved === total && total > 0 ? 'text-green-500' : (darkMode ? 'text-gray-500' : 'text-gray-500')}`}
-                        style={{ fontSize: '0.7rem' }}
-                    >
+                    <div className="flex items-center space-x-2">
+                        {isExpanded ? <ChevronDown className={`w-4 h-4 ${categoryTextColor}`} /> : <ChevronRight className={`w-4 h-4 ${categoryTextColor}`} />}
+                        <span className={`font-medium text-sm ${categoryTextColor}`}>{category}</span>
+                    </div>
+                    <span className={`text-xs font-medium ${progressTextColor}`}>
                         ({solved}/{total})
                     </span>
-                </button>
+                </div>
 
-                {/* Nested Difficulty Buttons */}
+                {/* Nested Difficulty Buttons (now used as filters within the expanded category) */}
                 {isExpanded && (
-                    <div className="pl-6 pt-1 pb-1 space-y-1">
+                    <div className="ml-6 mt-2 space-y-2">
                         {(["Easy", "Medium", "Hard"] as Difficulty[]).map((diff) => {
                             const stats = categoryDifficultyStats[category]?.[diff];
                             if (!stats || stats.total === 0) return null;
 
                             const isSelected = selectedDifficulty === diff;
+                            const isSubcategorySolved = stats.solved === stats.total && stats.total > 0;
+
+                            const diffItemClass = `flex justify-between items-center w-full text-xs py-1 px-2 rounded-md transition-colors ${
+                                isSelected
+                                    ? 'bg-[#6334B9] text-white'
+                                    : (darkMode ? "text-gray-400 hover:bg-gray-700" : "text-gray-600 hover:bg-gray-200")
+                            }`;
+
+                            const diffProgressColor = isSelected 
+                                ? 'text-white' 
+                                : (isSubcategorySolved ? 'text-green-500' : (darkMode ? 'text-gray-400' : 'text-gray-600'));
 
                             return (
                                 <button
@@ -588,17 +640,10 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
                                         e.stopPropagation();
                                         setSelectedDifficulty(diff === selectedDifficulty ? null : diff);
                                     }}
-                                    className={`flex justify-between items-center w-full text-xs py-1 px-2 rounded-md transition-colors 
-                                        ${isSelected
-                                            ? 'text-white'
-                                            : (darkMode ? "text-gray-400 hover:bg-gray-700" : "text-gray-600 hover:bg-gray-200")}`}
-                                    style={{
-                                        backgroundColor: isSelected ? PRIMARY_COLOR : undefined,
-                                        color: isSelected ? 'white' : undefined
-                                    }}
+                                    className={diffItemClass}
                                 >
                                     <span>{diff}</span>
-                                    <span className={`font-mono ${isSelected ? 'text-white' : 'text-gray-500'} dark:${isSelected ? 'text-white' : 'text-gray-400'}`}>
+                                    <span className={`font-mono text-xs ${diffProgressColor}`}>
                                         ({stats.solved}/{stats.total})
                                     </span>
                                 </button>
@@ -612,97 +657,110 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
 
 
     return (
-        <div
-            className={`flex flex-col md:flex-row min-h-screen transition-colors duration-500 pt-20 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-900"}`}
-        >
+        <div className={`flex flex-col lg:flex-row min-h-screen pt-20 transition-colors duration-500 ${getBackgroundColorClass()}`}>
+
+             {/* Mobile Toggle Button */}
+            <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className={`
+                    fixed top-4 left-4 p-2 rounded-lg z-30 lg:hidden 
+                    ${getPurpleButtonClass()}
+                `}
+                style={{ top: '80px' }}
+            >
+                {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+
             {/* Sidebar */}
             <div
-                className={`w-64 p-4 sticky top-0 h-screen border-r overflow-y-scroll mt-7`}
-                style={{
-                    backgroundColor: darkMode ? '#1F2937' : '#F9FAFB',// Light gray background in Light mode
-                    borderColor: darkMode ? '#374151' : '#E5E7EB',
-                    scrollbarWidth: 'none',
-                    msOverflowStyle: 'none',
-                    WebkitOverflowScrolling: 'touch'
-                }}
+                className={`
+                    fixed left-0 top-20 h-[calc(100vh-80px)] w-80
+                    border-r p-0 z-20 mt-6
+                    transition-transform duration-300 ease-in-out
+                    lg:translate-x-0 lg:relative lg:top-0 lg:h-auto
+                    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+                    ${getSidebarColorClass()}
+                    overflow-y-auto
+                `}
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-                <h2 className="text-xl font-bold mb-4" style={{ color: darkMode ? 'white' : '#1F2937' }}>DSA Patterns</h2>
+                {/* Inner container with padding */}
+                <div className="p-4">
+                    <h1 className={`text-xl font-bold mb-4 ${darkMode ? "text-white" : "text-gray-900"}`}>DSA Roadmap</h1>
 
-                {/* Search Problems */}
-                <div className="relative mb-4 p-0">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#6334B9]" />
-                    <input
-                        type="text"
-                        placeholder="Search problems..."
-                        value={problemSearchTerm}
-                        onChange={(e) => setProblemSearchTerm(e.target.value)}
-                        className={`w-full py-2 pl-10 pr-4 border rounded-lg text-sm transition-colors shadow-sm`}
-                        style={{
-                            backgroundColor: darkMode ? '#2C323D' : 'white',
-                            borderColor: darkMode ? '#6334B9' : '#6334B9',
-                            color: darkMode ? 'white' : '#1F2937',
-                            outlineColor: PRIMARY_COLOR
-                        }}
-                    />
-                </div>
+                    {/* Search Problems */}
+                    <div className="relative mb-6">
+                        <Search className={`absolute left-3 top-2.5 w-4 h-4 text-[#6334B9]`} />
+                        <input
+                            type="text"
+                            placeholder="Search problems..."
+                            value={problemSearchTerm}
+                            onChange={(e) => setProblemSearchTerm(e.target.value)}
+                            className={`w-full pl-9 pr-3 py-2 rounded-md text-sm outline-none transition-colors duration-300 ${getProblemSearchColorClass()}`}
+                        />
+                    </div>
 
-                {/* Category Filter List */}
-                <div className="space-y-1">
-                    {filteredCategories.map(renderCategoryItem)}
+                    {/* Category Filter List */}
+                    <ul className="space-y-3">
+                        {filteredCategories.map(renderCategoryItem)}
+                    </ul>
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div
-                className="flex-1 p-8"
-                style={{ backgroundColor: darkMode ? 'var(--primary-dark-bg)' : 'white' }}
-            >
-                {/* Overall Progress Section (Styled as per image) */}
+            {/* Overlay to close sidebar on mobile */}
+            {isSidebarOpen && (
                 <div
-                    className={`p-6 mb-8 rounded-lg shadow-xl`}
-                    style={{
-                        backgroundColor: darkMode ? '#1F2937' : '#F3F4F6',
-                        color: darkMode ? 'white' : '#1F2937'
-                    }}
+                    className="fixed inset-0 bg-black opacity-50 z-10 lg:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                ></div>
+            )}
 
+            {/* Main Content */}
+            <div className="flex-1 p-6 overflow-y-auto">
+                {/* Overall Progress Section */}
+                <div 
+                    className={`p-6 rounded-lg mb-6 shadow-md transition-colors duration-500 ${getProgressSectionColorClass()}`}
                 >
                     <h2 className="text-xl font-bold mb-4">Overall Progress</h2>
                     <div className="flex items-center space-x-6">
                         {/* Solved Count Text */}
-                        <div className="text-4xl font-mono">
-                            <span className="font-bold text-3xl">{solvedQuestions}</span> / {FINAL_QUESTION_COUNT}
-                            <p className={`text-sm font-normal mt-1 ${darkMode ? "text-gray-400" : "text-gray-600"}`}>Problems Solved</p>
+                        <div className="flex flex-col items-start min-w-[120px]">
+                            <span className="text-2xl font-bold">
+                                {solvedQuestions} / {FINAL_QUESTION_COUNT}
+                            </span>
+                            <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-800"}`}>
+                                Problems Solved
+                            </p>
                         </div>
 
                         {/* Circular Progress Bar */}
-                        <div className="relative w-20 h-20">
-                            <svg className="w-full h-full" viewBox="0 0 100 100">
-                                {/* Background circle */}
+                        <div className="w-24 h-24 relative">
+                            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                {/* Background circle (Algorithm component uses 8px stroke on 48, so we'll adjust the Practice version to match) */}
                                 <circle
-                                    className={darkMode ? "text-gray-700" : "text-gray-300"}
-                                    strokeWidth="10"
-                                    stroke="currentColor"
+                                    className={`stroke-current ${darkMode ? "text-gray-700" : "text-gray-300"}`}
+                                    strokeWidth="8"
                                     fill="transparent"
-                                    r="45"
-                                    cx="50"
-                                    cy="50"
+                                    r="40"
+                                    cx="48"
+                                    cy="48"
                                 />
                                 {/* Progress circle */}
                                 <circle
-                                    className="transition-all duration-1000"
-                                    strokeWidth="10"
-                                    strokeDasharray="282.743"
-                                    strokeDashoffset={282.743 - (completionPercentage / 100) * 282.743}
+                                    className="stroke-current text-[#6334B9] transition-all duration-1000"
+                                    strokeWidth="8"
+                                    strokeDasharray={40 * 2 * Math.PI}
+                                    strokeDashoffset={
+                                        40 * 2 * Math.PI - (completionPercentage / 100) * (40 * 2 * Math.PI)
+                                    }
                                     strokeLinecap="round"
-                                    stroke={PRIMARY_COLOR}
                                     fill="transparent"
-                                    r="45"
-                                    cx="50"
-                                    cy="50"
-                                    style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%' }}
+                                    r="40"
+                                    cx="48"
+                                    cy="48"
                                 />
                             </svg>
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-xl font-bold">
+                            <span className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl ${darkMode ? "text-white" : "text-gray-900"}`}>
                                 {completionPercentage}%
                             </span>
                         </div>
@@ -712,79 +770,64 @@ const Practice: React.FC<PracticeProps> = ({ darkMode }) => {
                 <h2 className="text-2xl font-bold mb-4">Problem List</h2>
 
                 {/* Problem List Table */}
-                <div className={`overflow-x-auto rounded-lg shadow-lg`}>
-                    <table className="min-w-full divide-y" style={{
-                        backgroundColor: darkMode ? '#1F2937' : 'white',
-                        borderColor: darkMode ? '#374151' : '#E5E7EB'
-                    }}>
-                        <thead style={{ backgroundColor: darkMode ? '#2C323D' : '#F3F4F6' }}>
+                <div className={`overflow-x-auto`}>
+                    <table className={`min-w-full ${getTableColorClass()}`}>
+                        <thead className={getTableHeaderColorClass()}>
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-16" style={{ color: darkMode ? 'white' : '#1F2937' }}>
+                                <th className="p-3 text-left  font-bold tracking-wider w-1/12">
                                     Status
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider" style={{ color: darkMode ? 'white' : '#1F2937' }}>
+                                <th className="p-3 text-left  font-bold tracking-wider w-6/12">
                                     Problem Title
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-32" style={{ color: darkMode ? 'white' : '#1F2937' }}>
+                                <th className="p-3 text-left  font-bold tracking-wider w-2/12 hidden sm:table-cell">
                                     Difficulty
                                 </th>
                                 {(!expandedCategory) && (
-                                    <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider w-40" style={{ color: darkMode ? 'white' : '#1F2937' }}>
+                                    <th className="p-3 text-left  font-bold tracking-wider w-3/12 hidden md:table-cell">
                                         Category
                                     </th>
                                 )}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody className={`divide-y ${getTableColorClass()}`}>
                             {filteredQuestions.map((q) => (
                                 <tr
                                     key={q.id}
                                     onClick={() => handleRowClick(q.link)}
-                                    className={`cursor-pointer transition-colors duration-150`}
-                                    // Row color logic
-                                    style={{
-                                        backgroundColor: q.solved ? (darkMode ? '#1E232A' : '#F7FEF7') : (darkMode ? '#1F2937' : 'white'),
-                                    }}
-                                    onMouseEnter={e => {
-                                        if (!q.solved) {
-                                            e.currentTarget.style.backgroundColor = `${PRIMARY_COLOR}1A`;
-                                        }
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.backgroundColor = q.solved ? (darkMode ? '#1E232A' : '#F7FEF7') : (darkMode ? '#1F2937' : 'white');
-                                    }}
+                                    className={`cursor-pointer transition-colors duration-150 ${getTableRowColorClass(q.solved)}`}
                                 >
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <td className="p-3">
                                         <input
                                             type="checkbox"
                                             checked={q.solved}
                                             onClick={(e) => e.stopPropagation()}
                                             onChange={() => handleCheckboxChange(q.id)}
-                                            className={`h-4 w-4 rounded border-gray-300`}
-                                            style={{
-                                                backgroundColor: darkMode ? '#1F2937' : 'white',
-                                                borderColor: darkMode ? '#4B5563' : '#D1D5DB'
-                                            }}
+                                            className="w-4 h-4 text-[#6334B9] bg-gray-100 border-gray-300 rounded focus:ring-[#6334B9]"
                                         />
                                     </td>
-                                    <td className={`px-6 py-4 font-medium text-sm`}>
-                                        {q.title}
+                                    <td className={`p-3 font-medium text-sm`}>
+                                        <a 
+                                            href={q.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`${getProblemTitleColorClass(q.solved)}`}
+                                            onClick={(e) => e.stopPropagation()} // Prevent row click event when clicking title link
+                                        >
+                                            {q.title}
+                                        </a>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
+                                    <td className="p-3 whitespace-nowrap hidden sm:table-cell">
                                         <span
-                                            className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getDifficultyColorClass(q.difficulty)}`}
+                                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyColorClass(q.difficulty)}`}
                                         >
                                             {q.difficulty}
                                         </span>
                                     </td>
                                     {(!expandedCategory) && (
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="p-3 whitespace-nowrap hidden md:table-cell">
                                             <span
-                                                className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full`}
-                                                style={{
-                                                    backgroundColor: darkMode ? '#4B5563' : '#E5E7EB',
-                                                    color: darkMode ? '#D1D5DB' : '#4B5563',
-                                                }}
+                                                className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${darkMode ? "bg-blue-900 text-blue-200" : "bg-blue-100 text-blue-700"}`}
                                             >
                                                 {q.category}
                                             </span>

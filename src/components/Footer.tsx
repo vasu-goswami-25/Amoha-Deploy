@@ -56,23 +56,23 @@ const Footer: React.FC<FooterProps> = ({ darkMode }) => {
               {[
                 {
                   name: "Practice Programming Language",
-                  href: "http://localhost:5173/practice/ProgramingLang",
+                  href: "/practice/ProgramingLang",
                 },
                 {
                   name: "Service-Based DSA Sheet",
-                  href: "http://localhost:5173/practice/service-based-dsa",
+                  href: "/practice/service-based-dsa",
                 },
                 {
                   name: "Product Based DSA Sheet",
-                  href: "http://localhost:5173/practice/dsa-problems",
+                  href: "/practice/dsa-problems",
                 },
                 {
                   name: "Competitive Programming",
-                  href: "http://localhost:5173/practice/CP",
+                  href: "/practice/CP",
                 },
                 {
                   name: "Blind 75",
-                  href: "http://localhost:5173/practice/blind-75",
+                  href: "/practice/blind-75",
                 },
               ].map((service, idx) => (
                 <li key={idx}>
